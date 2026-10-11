@@ -1,8 +1,8 @@
-import React from 'react';
+import type { HTMLAttributes, ElementType } from 'react';
 import { cn } from '@/shared/utils/cn';
 
-export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
-  as?: React.ElementType;
+export interface TextProps extends HTMLAttributes<HTMLParagraphElement> {
+  as?: ElementType;
   variant?:
     | 'display-lg'
     | 'headline-lg'

@@ -7,5 +7,28 @@
     "title": "Something went wrong!",
     "description": "An unexpected error occurred in this section of the application.",
     "tryAgain": "Try again"
+  },
+  "UI": {
+    "selectOption": "Select an option",
+    "toggleTheme": "Toggle theme",
+    "selectLanguage": "Select language",
+    "languages": {
+      "en": "English",
+      "ar": "العربية",
+      "ur": "اردو",
+      "hi": "हिंदी"
+    }
+  },
+  "FatalError": {
+    "title": "Fatal Application Error",
+    "description": "The application encountered an unrecoverable error.",
+    "tryAgain": "Try to recover"
+  },
+  "Tooltip": {
+    "help": "Help information",
+    "quickLeave": "Quick leave",
+    "unmount": "Unmount trigger",
+    "position": "Position test",
+    "hover": "Hover me"
   }
 }

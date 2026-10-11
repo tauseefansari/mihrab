@@ -47,6 +47,7 @@ export async function AyahWidget() {
         <Button
           variant="ghost"
           size="icon"
+          aria-label={t('viewVerse')}
           className="text-primary hover:bg-primary/5 rounded-full transition-colors"
         >
           <Icon name="ArrowRight" size={20} />

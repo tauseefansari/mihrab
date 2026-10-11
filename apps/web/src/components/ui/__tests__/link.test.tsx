@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Link } from '../link';
+import { Link } from '@/components/ui/link';
 
 describe('Link component', () => {
   it('renders internal link without hover:underline', () => {

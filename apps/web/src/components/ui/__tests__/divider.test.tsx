@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { Divider } from '../divider';
+import { Divider } from '@/components/ui/divider';
 
 describe('Divider component', () => {
   it('renders horizontal divider by default', () => {

@@ -73,11 +73,11 @@ export async function PrayerTimesWidget() {
       </Box>
 
       <Box as="div" className="mt-lg gap-unit z-10 flex w-full flex-col">
-        <PrayerRow name={t('fajr')} time="03:15 AM" />
-        <PrayerRow name={t('dhuhr')} time="01:06 PM" />
-        <PrayerRow name={t('asr')} time="05:25 PM" isActive />
-        <PrayerRow name={t('maghrib')} time="09:18 PM" />
-        <PrayerRow name={t('isha')} time="10:45 PM" />
+        <PrayerRow name={t('fajr')} time={t('times.fajr')} />
+        <PrayerRow name={t('dhuhr')} time={t('times.dhuhr')} />
+        <PrayerRow name={t('asr')} time={t('times.asr')} isActive />
+        <PrayerRow name={t('maghrib')} time={t('times.maghrib')} />
+        <PrayerRow name={t('isha')} time={t('times.isha')} />
       </Box>
     </GlassCard>
   );

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { GlassCard } from '../glass-card';
+import { GlassCard } from '@/components/ui/glass-card';
 
 describe('GlassCard component', () => {
   it('renders with glass-panel utility class', () => {

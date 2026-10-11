@@ -22,3 +22,5 @@ package-lock.json
 *.pdf
 test-results/
 playwright-report/
+**/public/sw.js*
+.serwist/

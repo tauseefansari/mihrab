@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Radio } from '../radio';
+import { Radio } from '@/components/ui/radio';
 
 describe('Radio component', () => {
   it('toggles radio button and emits value in uncontrolled mode', () => {

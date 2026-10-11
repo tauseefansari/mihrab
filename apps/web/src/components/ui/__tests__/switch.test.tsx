@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Switch } from '../switch';
+import { Switch } from '@/components/ui/switch';
 
 describe('Switch component', () => {
   it('toggles switch state in uncontrolled mode', () => {

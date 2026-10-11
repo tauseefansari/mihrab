@@ -7,5 +7,9 @@
   "qiblah": "Qiblah",
   "zakat": "Zakat",
   "settings": "Settings",
-  "brandName": "Al-Mihrab"
+  "brandName": "Al-Mihrab",
+  "notifications": "Notifications",
+  "profile": "Profile",
+  "menu": "Menu",
+  "account": "Account"
 }

@@ -1,7 +1,7 @@
-import React from 'react';
+import type { HTMLAttributes } from 'react';
 import { cn } from '@/shared/utils/cn';
 
-export interface DividerProps extends React.HTMLAttributes<HTMLHRElement> {
+export interface DividerProps extends HTMLAttributes<HTMLHRElement> {
   orientation?: 'horizontal' | 'vertical';
 }
 

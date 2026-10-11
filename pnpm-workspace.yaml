@@ -2,6 +2,11 @@ packages:
   - 'apps/*'
   - 'packages/*'
 
+overrides:
+  '@grpc/grpc-js': '>=1.13.6'
+  next: '^16.4.0'
+  fast-glob: '^3.3.3'
+
 allowBuilds:
   '@firebase/util': true
   '@parcel/watcher': true

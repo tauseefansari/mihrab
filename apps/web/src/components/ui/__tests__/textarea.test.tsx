@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Textarea } from '../textarea';
+import { Textarea } from '@/components/ui/textarea';
 
 describe('Textarea component', () => {
   it('renders textarea with placeholder', () => {

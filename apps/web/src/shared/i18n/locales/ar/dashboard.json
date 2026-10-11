@@ -15,5 +15,15 @@
   "verseReference": "سورة البقرة ٢:١٥٢",
   "qiblaDirection": "اتجاه القبلة من لندن",
   "dailyGoalProgress": "تقدم الهدف اليومي",
-  "tasksCompleted": "تم إنجاز ٣ من أصل ٤ مهام"
+  "tasksCompleted": "تم إنجاز ٣ من أصل ٤ مهام",
+  "viewVerse": "عرض الآية",
+  "qiblaDegrees": "١١٥° جنوب شرق",
+  "goalPercentage": "٧٥٪",
+  "times": {
+    "fajr": "٠٣:١٥ ص",
+    "dhuhr": "٠١:٠٦ م",
+    "asr": "٠٥:٢٥ م",
+    "maghrib": "٠٩:١٨ م",
+    "isha": "١٠:٤٥ م"
+  }
 }

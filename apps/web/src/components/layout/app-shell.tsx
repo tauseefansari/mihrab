@@ -1,10 +1,10 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 import { Box } from '@/components/ui/box';
 import { DesktopSidebar } from '@/components/layout/desktop-sidebar';
 import { TopBar } from '@/components/layout/top-bar';
 import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav';
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children }: { children: ReactNode }) {
   return (
     <Box
       as="div"

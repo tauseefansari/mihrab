@@ -1,7 +1,8 @@
-import React from 'react';
+import { createRef } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Select } from '../select';
+import { Select } from '@/components/ui/select';
+import enCommon from '@/shared/i18n/locales/en/common.json';
 
 describe('Select component', () => {
   it('renders trigger with placeholder and opens dropdown on click', () => {
@@ -74,17 +75,17 @@ describe('Select component', () => {
     expect(screen.getAllByRole('button')).toHaveLength(1);
   });
 
-  it('falls back to "Select an option" when no placeholder is provided', () => {
+  it('falls back to translated selectOption when no placeholder is provided', () => {
     render(
       <Select>
         <option value="1">Option 1</option>
       </Select>
     );
-    expect(screen.getByRole('button')).toHaveTextContent('Select an option');
+    expect(screen.getByRole('button')).toHaveTextContent(enCommon.UI.selectOption);
   });
 
   it('supports ref forwarding via object ref and callback ref', () => {
-    const refObj = React.createRef<HTMLSelectElement>();
+    const refObj = createRef<HTMLSelectElement>();
     const refFn = vi.fn();
     const { unmount } = render(
       <Select ref={refObj}>
@@ -124,5 +125,23 @@ describe('Select component', () => {
     );
     const trigger = screen.getByRole('button');
     expect(trigger).toHaveClass('border-error');
+  });
+
+  it('updates when controlled value changes', () => {
+    const { rerender } = render(
+      <Select value="1">
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+      </Select>
+    );
+    expect(screen.getByRole('button')).toHaveTextContent('Option 1');
+
+    rerender(
+      <Select value="2">
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+      </Select>
+    );
+    expect(screen.getByRole('button')).toHaveTextContent('Option 2');
   });
 });

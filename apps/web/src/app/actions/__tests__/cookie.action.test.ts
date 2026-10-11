@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { setCookieAction } from '../cookie.action';
+import { setCookieAction } from '@/app/actions/cookie.action';
 import { CookieService } from '@/core/services/cookie.service';
 
 vi.mock('@/core/services/cookie.service', () => ({

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { locales, defaultLocale } from '../i18n';
+import { locales, defaultLocale } from '@/shared/config/i18n';
 
 describe('i18n config', () => {
   it('defines supported locales and default locale', () => {

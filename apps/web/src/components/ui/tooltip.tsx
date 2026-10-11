@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ReactNode, type ReactElement } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/utils/cn';
 
 export interface TooltipProps {
-  content: React.ReactNode;
-  children: React.ReactElement;
+  content: ReactNode;
+  children: ReactElement;
   position?: 'top' | 'bottom' | 'left' | 'right';
   delay?: number;
   className?: string;

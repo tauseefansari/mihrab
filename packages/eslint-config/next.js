@@ -28,13 +28,33 @@ export const nextConfig = [
       'tailwindcss/enforces-shorthand': 'off',
       'tailwindcss/no-arbitrary-value': 'error',
 
-      // Strict UI Text via next-intl
+      // Strict UI Text, Production data-testid Ban, Named Imports & React 19 Modern Rules
       'no-restricted-syntax': [
         'error',
         {
           selector: 'JSXText[value=/[a-zA-Z]/]',
           message:
             'Hardcoded text is forbidden. Use next-intl useTranslations or getTranslations instead.',
+        },
+        {
+          selector: 'JSXAttribute[name.name="data-testid"]',
+          message:
+            'data-testid is forbidden in production code; it is only allowed in test files (*.test.tsx).',
+        },
+        {
+          selector: 'MemberExpression[object.name="React"]',
+          message:
+            'Direct React.<member> access is forbidden. Import named members directly from "react" (e.g. import { useState, useEffect } from "react"; or import type { ReactNode } from "react";).',
+        },
+        {
+          selector: 'CallExpression[callee.name="forwardRef"]',
+          message:
+            'In React 19, forwardRef is deprecated. Pass ref as a standard prop directly to the component.',
+        },
+        {
+          selector: 'MemberExpression[property.name="displayName"]',
+          message:
+            'Explicit Component.displayName assignment is unnecessary for standard function components in React 19.',
         },
       ],
     },
@@ -46,7 +66,13 @@ export const nextConfig = [
       'src/core/**/*.tsx',
       'src/shared/**/*.tsx',
     ],
-    ignores: ['src/app/layout.tsx', 'src/app/global-error.tsx', '**/__tests__/**'],
+    ignores: [
+      'src/app/layout.tsx',
+      'src/app/global-error.tsx',
+      '**/__tests__/**',
+      '**/__mocks__/**',
+      '**/__fixtures__/**',
+    ],
     rules: {
       'no-restricted-syntax': [
         'error',
@@ -60,12 +86,16 @@ export const nextConfig = [
     },
   },
   {
-    files: ['**/__tests__/**', '**/*.test.*', '**/*.spec.*'],
+    files: [
+      '**/__tests__/**',
+      '**/*.test.*',
+      '**/*.spec.*',
+      '**/__mocks__/**',
+      '**/__fixtures__/**',
+    ],
     rules: {
       'no-restricted-syntax': 'off',
-      'sonarjs/no-duplicate-string': 'off',
       'max-lines-per-function': 'off',
-      'no-restricted-imports': 'off',
     },
   },
 ];

@@ -1,27 +1,57 @@
 # Technical Design & Architecture
 
-## 1. Technology Stack
+## 1. Monorepo Architecture (Turborepo + pnpm)
 
-- **Framework:** Next.js 15 (App Router, React Server Components).
-- **Language:** TypeScript (Strict Mode).
-- **Styling:** Tailwind CSS v4, Framer Motion for micro-animations.
-- **Database:** PostgreSQL.
-- **ORM:** Drizzle ORM.
-- **Authentication:** Firebase Auth (Phone/OTP) syncing to PostgreSQL.
-- **i18n:** `next-intl` (Dynamic routing `/[locale]/...`).
+The project is organized as a high-performance **Turborepo monorepo**:
 
-## 2. Architectural Principles
+```text
+mihrab/
+├── apps/
+│   └── web/                           # Next.js 16 App Router application (@mihrab/web)
+├── packages/
+│   ├── eslint-config/                 # Flat config (SonarJS, TS ?? enforcement, React Compiler)
+│   ├── typescript-config/             # Ultra-strict TypeScript configs (base.json, nextjs.json)
+│   ├── prettier-config/               # Prettier with tailwindcss plugin
+│   └── vitest-config/                 # Standalone Vitest config (strict 90% coverage threshold)
+```
 
-- **Feature-Sliced Design:** Code is grouped by domain (e.g., `src/features/quran`, `src/features/auth`) rather than file type.
-- **SOLID & DRY:**
-  - UI components are pure and decoupled from data fetching.
-  - Server Actions handle all database mutations.
-  - Reusable logic (date parsing, prayer calculations) lives in `src/core/utils`.
-- **Dynamic Directionality:** Strict usage of Tailwind logical properties (`ps-`, `me-`, `text-start`, `text-end`) to support automatic LTR/RTL flipping based on the locale.
+---
 
-## 3. Database Schema (Drizzle ORM)
+## 2. Technology Stack
 
-- **`users`:** `id` (UUID), `phone` (Unique), `name`, `created_at`.
-- **`user_settings`:** `user_id` (FK), `theme`, `language`, `madhab`, `calculation_method`.
-- **`tasbeeh_logs`:** `id`, `user_id` (FK), `dhikr_key`, `count`, `last_updated`.
-- **`bookmarks`:** `id`, `user_id` (FK), `surah_number`, `ayah_number`.
+- **Framework:** Next.js 16 (App Router, React Server Components, React Compiler).
+- **Core Library:** React 19 (`import { Activity } from 'react'`, ref as a prop, Server Actions, `useActionState`, React Compiler auto-memoization).
+- **Language:** TypeScript 5+ (Strict Mode with `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess`).
+- **Styling:** Tailwind CSS with strict logical CSS properties (`ps-`, `pe-`, `ms-`, `me-`, `text-start`, `text-end`).
+- **Micro-Animations:** Framer Motion (isolated to client UI primitives in `src/components/ui/`).
+- **Database & ORM:** PostgreSQL (Neon serverless) with Drizzle ORM.
+- **Authentication:** Firebase Auth syncing to PostgreSQL via Next.js Server Actions.
+- **i18n:** `next-intl` (supporting `en`, `ar`, `ur`, `hi` with zero hardcoded UI strings).
+- **Service Worker / PWA:** Serwist (`@serwist/next`).
+
+---
+
+## 3. Architectural Principles & Constraints
+
+- **Feature-Sliced Design (FSD):**
+  - `src/components/ui/`: Strictly pure, dumb UI primitives. This is the **only** directory where raw HTML elements (`<button>`, `<div>`, `<input>`) may be used directly for structural styling.
+  - `src/components/layout/`: Global layout components (`AppShell`, `DesktopSidebar`, `MobileBottomNav`, `TopBar`).
+  - `src/features/`: Domain-specific components and bento widgets (`src/features/dashboard/components/*`).
+  - `src/core/services/`: Isolated business logic services (e.g. `CookieService`).
+  - `src/shared/`: Shared utilities (`cn`), configs (`env`, `i18n`), and translation dictionaries.
+- **React 19 Ref as a Prop:** Function components receive `ref` directly as a prop (`ref?: Ref<...>`). `forwardRef` and `Component.displayName` assignments are deprecated and strictly forbidden.
+- **React Compiler Auto-Memoization:** Manual `useMemo` and `useCallback` are obsolete and forbidden. The React Compiler optimizes all component derivations and callbacks automatically.
+- **Single Export Principle:** Exactly **one exported component per file** matching the kebab-case file name. Private helper sub-components are permitted **only** if they are unexported and used exclusively within that file.
+- **Strict Alias Imports:** Absolute `@/...` imports are required across **all** files (including tests in `__tests__/`). Relative parent imports (`../`) are banned by ESLint.
+- **Named Imports Only:** Never use `React.<member>` namespace access (e.g. `React.useEffect`, `React.useState`). Import named symbols directly from `'react'`.
+- **Production `data-testid` Ban:** `data-testid` is forbidden in production code and allowed only in `*.test.tsx`.
+- **Zero Coverage Exclusion:** All source files must be tested with $\ge 90\%$ coverage across statements, branches, functions, and lines.
+
+---
+
+## 4. Database Schema (Drizzle ORM)
+
+- **`users`:** `id` (UUID, PK), `phone` (Unique), `name`, `avatarUrl`, `createdAt`, `updatedAt`.
+- **`userSettings`:** `userId` (FK -> `users.id`), `calculationMethod`, `madhab`, `theme`, `language`, `latitude`, `longitude`, `city`, `country`, `updatedAt`.
+- **`tasbeehLogs`:** `id` (UUID, PK), `userId` (FK -> `users.id`), `dhikrKey`, `count`, `target`, `lastUpdated`.
+- **`bookmarks`:** `id` (UUID, PK), `userId` (FK -> `users.id`), `surahNumber`, `ayahNumber`, `createdAt`.

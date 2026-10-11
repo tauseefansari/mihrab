@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Text } from '../text';
+import { Text } from '@/components/ui/text';
 
 describe('Text component', () => {
   it('renders text with default p element and body-md variant', () => {

@@ -27,7 +27,7 @@ export async function QiblaWidget() {
       </Box>
       <Box as="div">
         <Text as="h3" variant="headline-lg-mobile" className="text-on-background">
-          115° SE
+          {t('qiblaDegrees')}
         </Text>
         <Text as="p" variant="body-md" className="text-on-surface-variant">
           {t('qiblaDirection')}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cn } from '../cn';
+import { cn } from '@/shared/utils/cn';
 
 describe('cn utility', () => {
   it('merges single classes correctly', () => {

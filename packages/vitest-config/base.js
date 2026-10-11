@@ -6,14 +6,23 @@ export const baseVitestConfig = defineConfig({
     passWithNoTests: true,
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'text-summary', 'json', 'html'],
       thresholds: {
         lines: 90,
         functions: 90,
         branches: 90,
         statements: 90,
       },
-      exclude: ['node_modules/**', '.next/**', '**/*.d.ts', '**/*.config.*', '**/__tests__/**'],
+      exclude: [
+        'node_modules/**',
+        '.next/**',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/__tests__/**',
+        '**/__mocks__/**',
+        '**/__fixtures__/**',
+        '**/*.css',
+      ],
     },
   },
 });

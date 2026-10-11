@@ -17,7 +17,7 @@ export async function GoalWidget() {
           variant="label-sm"
           className="bg-primary/10 px-xs py-unit text-primary rounded"
         >
-          75%
+          {t('goalPercentage')}
         </Text>
       </Box>
       <Box

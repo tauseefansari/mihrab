@@ -16,6 +16,10 @@ coverage/
 out/
 build/
 dist/
+**/public/sw.js
+**/public/sw.js.map
+**/public/swe-worker-*.js
+.serwist/
 
 # turborepo
 .turbo/

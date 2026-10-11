@@ -6,15 +6,7 @@ export default mergeConfig(reactVitestConfig, {
   test: {
     setupFiles: ['./vitest.setup.ts'],
     alias: {
-      '@': resolve(__dirname, './src'),
-    },
-    coverage: {
-      exclude: [
-        'src/app/layout.tsx',
-        'src/app/error.tsx',
-        'src/app/global-error.tsx',
-        'src/shared/config/env.ts',
-      ],
+      '@': resolve(import.meta.dirname, './src'),
     },
   },
 });

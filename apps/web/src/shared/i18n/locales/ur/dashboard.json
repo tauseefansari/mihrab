@@ -15,5 +15,15 @@
   "verseReference": "البقرہ 2:152",
   "qiblaDirection": "لندن سے قبلہ کی سمت",
   "dailyGoalProgress": "روزانہ کا ہدف",
-  "tasksCompleted": "4 میں سے 3 کام مکمل"
+  "tasksCompleted": "4 میں سے 3 کام مکمل",
+  "viewVerse": "آیت دیکھیں",
+  "qiblaDegrees": "115° جنوب مشرق",
+  "goalPercentage": "75%",
+  "times": {
+    "fajr": "03:15 قبل دوپہر",
+    "dhuhr": "01:06 بعد دوپہر",
+    "asr": "05:25 بعد دوپہر",
+    "maghrib": "09:18 شام",
+    "isha": "10:45 رات"
+  }
 }

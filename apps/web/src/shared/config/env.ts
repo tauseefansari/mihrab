@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const envSchema = z.object({
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: isProduction
+    ? z.string().url()
+    : z.string().url().default('postgresql://user:password@localhost:5432/mihrab_db'),
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string().optional(),
   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: z.string().optional(),
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string().optional(),

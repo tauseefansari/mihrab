@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Box } from '../box';
+import { Box } from '@/components/ui/box';
 
 describe('Box component', () => {
   it('renders children with default div tag', () => {

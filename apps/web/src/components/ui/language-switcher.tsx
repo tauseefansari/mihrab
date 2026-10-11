@@ -2,12 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { Select } from '@/components/ui/select';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { setCookieAction } from '@/app/actions/cookie.action';
 
 export function LanguageSwitcher() {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations('UI');
 
   const handleLanguageChange = async (value: string) => {
     await setCookieAction('NEXT_LOCALE', value);
@@ -15,10 +16,10 @@ export function LanguageSwitcher() {
   };
 
   const languages = [
-    { label: 'EN', value: 'en' },
-    { label: 'عربي', value: 'ar' },
-    { label: 'اردو', value: 'ur' },
-    { label: 'हिंदी', value: 'hi' },
+    { label: t('languages.en'), value: 'en' },
+    { label: t('languages.ar'), value: 'ar' },
+    { label: t('languages.ur'), value: 'ur' },
+    { label: t('languages.hi'), value: 'hi' },
   ];
 
   return (
@@ -26,7 +27,7 @@ export function LanguageSwitcher() {
       <Select
         value={locale}
         onChange={(e) => handleLanguageChange(e.target.value)}
-        placeholder="Lang"
+        placeholder={t('selectLanguage')}
       >
         {languages.map((lang) => (
           <option key={lang.value} value={lang.value}>

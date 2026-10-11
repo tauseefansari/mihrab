@@ -1,11 +1,13 @@
 'use client';
 
 import { useTheme } from 'next-themes';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { setCookieAction } from '@/app/actions/cookie.action';
 
 export function ThemeSwitcher() {
+  const t = useTranslations('UI');
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
@@ -42,7 +44,7 @@ export function ThemeSwitcher() {
     <Button
       variant="ghost"
       size="icon"
-      aria-label="Toggle Theme"
+      aria-label={t('toggleTheme')}
       className="bg-surface-container text-on-surface hover:bg-surface-container-high rounded-full transition-colors"
       onClick={toggleTheme}
     >

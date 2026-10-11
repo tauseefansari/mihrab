@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { Icon } from '../icon';
+import { Icon } from '@/components/ui/icon';
 
 describe('Icon component', () => {
   it('renders valid Lucide icon', () => {

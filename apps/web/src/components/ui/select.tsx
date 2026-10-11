@@ -1,24 +1,36 @@
-'use client';
-
-import React, { useState, useRef, useEffect } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  Children,
+  isValidElement,
+  type ReactNode,
+  type ReactElement,
+  type SelectHTMLAttributes,
+  type ChangeEvent,
+  type Ref,
+  type RefObject,
+} from 'react';
 import { cn } from '@/shared/utils/cn';
 import { Icon } from '@/components/ui/icon';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
-export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
+export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   placeholder?: string | undefined;
   error?: boolean | undefined;
+  ref?: Ref<HTMLSelectElement>;
 }
 
 type OptionType = { value: string; label: string };
 
-function parseOptions(children: React.ReactNode): OptionType[] {
+function parseOptions(children: ReactNode): OptionType[] {
   const options: OptionType[] = [];
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === 'option') {
-      const element = child as React.ReactElement<{
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === 'option') {
+      const element = child as ReactElement<{
         value?: string | number;
-        children?: React.ReactNode;
+        children?: ReactNode;
       }>;
       options.push({
         value: element.props.value?.toString() ?? '',
@@ -53,11 +65,13 @@ function DropdownList({
             type="button"
             onClick={() => onSelect(opt.value)}
             className={cn(
-              'hover:bg-surface-dim hover:text-on-surface focus:bg-surface-dim relative flex w-full cursor-default items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none select-none',
-              opt.value === currentValue && 'bg-primary/10 text-primary hover:bg-primary/20'
+              'hover:bg-surface-container-high focus:bg-surface-container-high flex w-full cursor-pointer items-center gap-2 rounded-sm px-3 py-2 text-sm transition-colors focus:outline-none',
+              opt.value === currentValue
+                ? 'text-primary font-semibold'
+                : 'text-on-surface hover:text-on-surface'
             )}
           >
-            <span className="absolute start-2 flex size-3.5 items-center justify-center">
+            <span className="flex size-4 items-center justify-center">
               {opt.value === currentValue && <Icon name="Check" size={14} />}
             </span>
             <span className="truncate">{opt.label}</span>
@@ -68,22 +82,25 @@ function DropdownList({
   );
 }
 
-const HiddenSelect = React.forwardRef<
-  HTMLSelectElement,
-  React.SelectHTMLAttributes<HTMLSelectElement> & { placeholder?: string | undefined }
->(({ placeholder, children, ...props }, ref) => (
-  <select ref={ref} className="hidden" {...props}>
-    {placeholder && (
-      <option value="" disabled>
-        {placeholder}
-      </option>
-    )}
-    {children}
-  </select>
-));
-HiddenSelect.displayName = 'HiddenSelect';
+interface HiddenSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  placeholder?: string | undefined;
+  ref?: Ref<HTMLSelectElement>;
+}
 
-const SelectTrigger = ({
+function HiddenSelect({ placeholder, children, ref, ...props }: HiddenSelectProps) {
+  return (
+    <select ref={ref} className="hidden" {...props}>
+      {placeholder && (
+        <option value="" disabled>
+          {placeholder}
+        </option>
+      )}
+      {children}
+    </select>
+  );
+}
+
+function SelectTrigger({
   disabled,
   isOpen,
   setIsOpen,
@@ -97,102 +114,113 @@ const SelectTrigger = ({
   error?: boolean | undefined;
   selectedOption: OptionType | undefined;
   placeholder?: string | undefined;
-}) => (
-  <button
-    type="button"
-    disabled={disabled}
-    onClick={() => !disabled && setIsOpen(!isOpen)}
-    className={cn(
-      'border-outline/50 placeholder:text-outline focus:border-primary flex h-10 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
-      error && 'border-error text-error focus:border-error'
-    )}
-  >
-    <span className={cn('truncate', !selectedOption && 'text-outline')}>
-      {selectedOption ? selectedOption.label : (placeholder ?? 'Select an option')}
-    </span>
-    <Icon
-      name="ChevronDown"
-      size={16}
-      className={cn('opacity-50 transition-transform', isOpen && 'rotate-180')}
-    />
-  </button>
-);
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={() => !disabled && setIsOpen(!isOpen)}
+      className={cn(
+        'border-outline/50 placeholder:text-outline focus:border-primary flex h-10 w-full cursor-pointer items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        error && 'border-error text-error focus:border-error'
+      )}
+    >
+      <span className={cn('truncate', !selectedOption && 'text-outline')}>
+        {selectedOption ? selectedOption.label : placeholder}
+      </span>
+      <Icon
+        name="ChevronDown"
+        size={16}
+        className={cn('opacity-50 transition-transform', isOpen && 'rotate-180')}
+      />
+    </button>
+  );
+}
 
-export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  (
-    { className, children, placeholder, error, value, defaultValue, onChange, disabled, ...props },
-    ref
-  ) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const selectRef = useRef<HTMLSelectElement>(null);
-    const [internalValue, setInternalValue] = useState(value ?? defaultValue ?? '');
-
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? value : internalValue;
-    const options = parseOptions(children);
-    const selectedOption = options.find((opt) => opt.value === currentValue);
-
-    useEffect(() => {
-      const handleOutsideClick = (e: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(e.target as Node))
-          setIsOpen(false);
-      };
-      document.addEventListener('mousedown', handleOutsideClick);
-      return () => document.removeEventListener('mousedown', handleOutsideClick);
-    }, []);
-
-    const handleOptionClick = (optValue: string) => {
-      if (!isControlled) setInternalValue(optValue);
-      if (selectRef.current) {
-        selectRef.current.value = optValue;
-        selectRef.current.dispatchEvent(new Event('change', { bubbles: true }));
-        if (onChange)
-          onChange({ target: { value: optValue } } as React.ChangeEvent<HTMLSelectElement>);
-      }
-      setIsOpen(false);
+function useOutsideClick(ref: RefObject<HTMLDivElement | null>, onOutside: () => void) {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onOutside();
     };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [ref, onOutside]);
+}
 
-    const handleSelectRef = (node: HTMLSelectElement) => {
-      selectRef.current = node;
-      if (typeof ref === 'function') ref(node);
-      else if (ref) (ref as React.MutableRefObject<HTMLSelectElement | null>).current = node;
-    };
+export function Select({
+  className,
+  children,
+  placeholder,
+  error,
+  value,
+  defaultValue,
+  onChange,
+  disabled,
+  ref,
+  ...props
+}: SelectProps) {
+  const t = useTranslations('UI');
+  const resolvedPlaceholder = placeholder ?? t('selectOption');
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  const [internalValue, setInternalValue] = useState(value ?? defaultValue ?? '');
 
-    return (
-      <div
-        ref={containerRef}
-        className={cn('relative w-full', disabled && 'cursor-not-allowed opacity-50', className)}
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+  const options = parseOptions(children);
+  const selectedOption = options.find((opt) => opt.value === currentValue);
+
+  useOutsideClick(containerRef, () => setIsOpen(false));
+
+  const handleOptionClick = (optValue: string) => {
+    if (!isControlled) setInternalValue(optValue);
+    if (selectRef.current) {
+      selectRef.current.value = optValue;
+      selectRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+      if (onChange) onChange({ target: { value: optValue } } as ChangeEvent<HTMLSelectElement>);
+    }
+    setIsOpen(false);
+  };
+
+  const handleSelectRef = (node: HTMLSelectElement) => {
+    selectRef.current = node;
+    if (typeof ref === 'function') ref(node);
+    else if (ref) (ref as { current: HTMLSelectElement | null }).current = node;
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn('relative w-full', disabled && 'cursor-not-allowed opacity-50', className)}
+    >
+      <HiddenSelect
+        ref={handleSelectRef}
+        placeholder={resolvedPlaceholder}
+        value={currentValue}
+        onChange={onChange ?? (() => {})}
+        disabled={disabled}
+        {...props}
       >
-        <HiddenSelect
-          ref={handleSelectRef}
-          placeholder={placeholder}
-          value={currentValue}
-          onChange={onChange}
-          disabled={disabled}
-          {...props}
-        >
-          {children}
-        </HiddenSelect>
-        <SelectTrigger
-          disabled={disabled}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          error={error}
-          selectedOption={selectedOption}
-          placeholder={placeholder}
-        />
-        <AnimatePresence>
-          {isOpen && (
-            <DropdownList
-              options={options}
-              currentValue={currentValue as string}
-              onSelect={handleOptionClick}
-            />
-          )}
-        </AnimatePresence>
-      </div>
-    );
-  }
-);
-Select.displayName = 'Select';
+        {children}
+      </HiddenSelect>
+      <SelectTrigger
+        disabled={disabled}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        error={error}
+        selectedOption={selectedOption}
+        placeholder={resolvedPlaceholder}
+      />
+      <AnimatePresence>
+        {isOpen && (
+          <DropdownList
+            options={options}
+            currentValue={currentValue as string}
+            onSelect={handleOptionClick}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

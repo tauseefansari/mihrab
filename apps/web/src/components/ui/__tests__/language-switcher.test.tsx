@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { LanguageSwitcher } from '../language-switcher';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import enCommon from '@/shared/i18n/locales/en/common.json';
 
 const mockRefresh = vi.fn();
 const mockSetCookieAction = vi.fn(async (_k: string, _v: string) => Promise.resolve());
@@ -9,10 +10,6 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({
     refresh: mockRefresh,
   }),
-}));
-
-vi.mock('next-intl', () => ({
-  useLocale: () => 'en',
 }));
 
 vi.mock('@/app/actions/cookie.action', () => ({
@@ -29,10 +26,12 @@ describe('LanguageSwitcher component', () => {
     render(<LanguageSwitcher />);
 
     const trigger = screen.getByRole('button');
-    expect(trigger).toHaveTextContent('EN');
+    expect(trigger).toHaveTextContent(enCommon.UI.languages.en);
 
     fireEvent.click(trigger);
-    const arOption = screen.getByRole('button', { name: /عربي/i });
+    const arOption = screen.getByRole('button', {
+      name: new RegExp(enCommon.UI.languages.ar, 'i'),
+    });
     fireEvent.click(arOption);
 
     expect(mockSetCookieAction).toHaveBeenCalledWith('NEXT_LOCALE', 'ar');

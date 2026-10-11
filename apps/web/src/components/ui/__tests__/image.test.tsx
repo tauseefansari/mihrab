@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Image } from '../image';
+import { Image } from '@/components/ui/image';
 
 describe('Image component', () => {
   it('renders image with alt text and src', () => {

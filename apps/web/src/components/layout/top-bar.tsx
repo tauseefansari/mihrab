@@ -19,7 +19,7 @@ export function TopBar() {
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Menu"
+          aria-label={t('menu')}
           className="text-on-surface-variant hover:bg-primary/5 dark:text-on-secondary-container dark:hover:bg-primary-fixed/5 -ms-2 rounded-full transition-colors transition-transform active:scale-95 md:hidden"
         >
           <Icon name="Menu" size={24} />
@@ -37,20 +37,21 @@ export function TopBar() {
       <Box as="div" className="gap-sm flex items-center">
         <LanguageSwitcher />
         <ThemeSwitcher />
-        <Tooltip content="Notifications" position="bottom">
+        <Tooltip content={t('notifications')} position="bottom">
           <Button
             variant="ghost"
             size="icon"
+            aria-label={t('notifications')}
             className="bg-surface-container text-on-surface hover:bg-surface-container-high rounded-full transition-colors"
           >
             <Icon name="Bell" size={20} />
           </Button>
         </Tooltip>
-        <Tooltip content="Profile" position="bottom">
+        <Tooltip content={t('profile')} position="bottom">
           <Button
             variant="ghost"
             size="icon"
-            aria-label="Account"
+            aria-label={t('account')}
             className="bg-surface-container text-on-surface hover:bg-surface-container-high rounded-full transition-colors"
           >
             <Icon name="User" size={20} />

@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Inter, Noto_Kufi_Arabic } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { AppShell } from '@/components/layout/app-shell';
 import '@/app/globals.css';
@@ -18,15 +19,18 @@ const notoArabic = Noto_Kufi_Arabic({
   preload: false,
 });
 
-export const metadata: Metadata = {
-  title: 'Mihrab App',
-  description: 'A Modern Spiritualist Islamic Application',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Index');
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const locale = await getLocale();
   const messages = await getMessages();

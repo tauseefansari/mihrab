@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '../theme-provider';
+import { ThemeProvider } from '@/components/ui/theme-provider';
 
 describe('ThemeProvider component', () => {
   it('renders children wrapped in next-themes provider', () => {

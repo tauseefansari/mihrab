@@ -3,6 +3,7 @@
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
+import enCommon from '@/shared/i18n/locales/en/common.json';
 
 export default function GlobalError({
   error,
@@ -13,10 +14,7 @@ export default function GlobalError({
 }) {
   console.error('Global error caught:', error);
 
-  // Hardcoded text bypassing JSXText linter because it is the global fallback
-  const title = 'Fatal Application Error';
-  const desc = 'The application encountered an unrecoverable error.';
-  const btn = 'Try to recover';
+  const { title, description, tryAgain } = enCommon.FatalError;
 
   return (
     <html lang="en">
@@ -30,10 +28,10 @@ export default function GlobalError({
             variant="body-md"
             className="mb-md text-on-surface-variant max-w-md text-center"
           >
-            {desc}
+            {description}
           </Text>
           <Button variant="primary" onClick={() => reset()}>
-            {btn}
+            {tryAgain}
           </Button>
         </Box>
       </body>

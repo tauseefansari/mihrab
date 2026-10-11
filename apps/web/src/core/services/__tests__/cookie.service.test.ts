@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { CookieService } from '../cookie.service';
+import { CookieService } from '@/core/services/cookie.service';
 
 const mockSet = vi.fn();
 

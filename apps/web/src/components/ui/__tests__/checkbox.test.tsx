@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Checkbox } from '../checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 
 describe('Checkbox component', () => {
   it('toggles internal checked state in uncontrolled mode', () => {
