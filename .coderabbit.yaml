@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: 'en-US'
+early_access: false
+
+reviews:
+  profile: 'assertive'
+  request_changes_workflow: false
+  high_level_summary: true
+  sequence_diagrams: true
+  collapse_walkthrough: false
+  poem: false
+  review_status: true
+
+auto_review:
+  enabled: true
+  drafts: false
+
+path_instructions:
+  - path: 'apps/web/src/components/**/*.tsx'
+    instructions: >-
+      Strictly verify that UI components respect FSD boundaries:
+      1. No raw HTML tags (<button>, <div>) outside src/components/ui/.
+      2. No physical directional Tailwind classes (pl-, pr-, ml-, mr-, text-left, text-right); strictly use logical properties (ps-, pe-, ms-, me-, text-start, text-end).
+      3. No hardcoded text; all strings must use next-intl translations.
+      4. Single export principle: only one component can be exported per file.
+  - path: 'apps/web/src/core/services/**/*.ts'
+    instructions: >-
+      Verify SOLID principles:
+      1. Services must be pure, testable classes isolated from UI.
+      2. Maximum 80 lines per function and cognitive complexity <= 15.
+      3. Strict typing with zero use of 'any'.
+      4. Environment variables must only be read from src/shared/config/env.ts, never raw process.env.
+  - path: 'apps/web/src/**/__tests__/**/*.test.ts*'
+    instructions: >-
+      Verify that unit tests are strictly co-located in the immediate parent __tests__ directory with exactly one test file per source file (e.g. foo.ts -> __tests__/foo.test.ts). Ensure branches and edge cases are tested for 90%+ coverage.
+
+chat:
+  auto_reply: true

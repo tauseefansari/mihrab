@@ -1,0 +1,21 @@
+# Claude Code context ignore to prevent cache invalidation and save tokens
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+.turbo/
+.vitest-cache/
+.graphify/
+graph.json
+graphify-out/
+*.tsbuildinfo
+pnpm-lock.yaml
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.webp
+test-results/
+playwright-report/

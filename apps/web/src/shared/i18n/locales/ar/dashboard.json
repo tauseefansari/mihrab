@@ -1,0 +1,19 @@
+{
+  "greeting": "السلام عليكم",
+  "date": "١٤ ذو الحجة ١٤٤٥ هـ",
+  "nextPrayer": "الصلاة القادمة",
+  "asr": "العصر",
+  "inTime": "بعد ساعتين و ١٥ دقيقة",
+  "location": "لندن، المملكة المتحدة",
+  "fajr": "الفجر",
+  "dhuhr": "الظهر",
+  "maghrib": "المغرب",
+  "isha": "العشاء",
+  "verseOfTheDay": "آية اليوم",
+  "verseArabic": "فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ",
+  "verseTranslation": "&quot;So remember Me; I will remember you. And be grateful to Me and do not deny Me.&quot;",
+  "verseReference": "سورة البقرة ٢:١٥٢",
+  "qiblaDirection": "اتجاه القبلة من لندن",
+  "dailyGoalProgress": "تقدم الهدف اليومي",
+  "tasksCompleted": "تم إنجاز ٣ من أصل ٤ مهام"
+}

@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mihrab App 🕌
 
-## Getting Started
+> A Modern Spiritualist Islamic Application, designed for _khushu_ (tranquility and focus).
 
-First, run the development server:
+[![CI/CD Pipeline](https://github.com/Tauseef/mihrab/actions/workflows/deploy.yml/badge.svg)](https://github.com/Tauseef/mihrab/actions/workflows/deploy.yml)
+[![Coverage Status](https://img.shields.io/badge/coverage-90%25-brightgreen.svg)](<>)
+[![Vercel](https://img.shields.io/badge/vercel-deployed-black.svg)](<>)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](<>)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwind-css)](<>)
+
+Mihrab App is an offline-first Islamic companion built on the cutting edge of the Next.js App Router. It utilizes the **Stitch Modern Spiritualist Design System** (Glassmorphic Minimalism) and adheres to extremely strict engineering standards to ensure it is robust, accessible, and easily maintainable.
+
+---
+
+## 🏗 Architecture & Stack
+
+- **Framework:** Next.js 15 (App Router, React 19)
+- **Database:** Neon Serverless Postgres via Drizzle ORM
+- **Authentication:** Firebase Auth (OTP/Phone)
+- **Design System:** Tailwind CSS v4, Framer Motion, Native View Transitions
+- **Internationalization:** next-intl (Full LTR/RTL support across EN, AR, UR, HI)
+- **PWA:** Serwist (Offline-First capabilities)
+- **Testing:** Vitest (90%+ Coverage), Playwright (E2E)
+
+### Strict Engineering Rules (SOLID & DRY)
+
+- **Zero Tolerance Linting:** The build fails on a single ESLint error or warning (`--max-warnings 0`), fully enforced by TypeScript.
+- **Feature-Sliced Design (FSD):** Code is modular. Raw HTML tags (`<button>`, `<input>`) are strictly forbidden outside of `src/components/ui/` to ensure the design system is universally respected.
+- **Complexity Limits:** Functions are capped at 80 lines and 15 cognitive complexity.
+- **SOLID Principles:** API routes and Server Actions act strictly as orchestrators; all business logic lives in `src/core/services/` (e.g. `CookieService`).
+- **Server Actions over Client Mutations:** Infrastructure operations like persisting theme and i18n settings to secure cookies are handled via optimized Next.js Server Actions.
+
+---
+
+## 🚀 Local Development Setup
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/Tauseef/mihrab.git
+   cd mihrab
+   ```
+
+2. **Install Dependencies (pnpm only)**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Environment Configuration**
+   - Copy the `.env.example` file to `.env`
+   - Fill in your `DATABASE_URL` (Neon) and Firebase keys.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Database Setup**
+
+   ```bash
+   pnpm dlx drizzle-kit generate
+   pnpm dlx drizzle-kit push
+   ```
+
+5. **Run the Development Server**
+   ```bash
+   pnpm dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+---
+
+## 🧪 Testing
+
+We enforce a strict 90% coverage limit.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Run unit tests and check coverage
+pnpm run test:coverage
+
+# Run End-to-End tests
+pnpm dlx playwright test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📜 License
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private - All Rights Reserved.

@@ -1,0 +1,11 @@
+{
+  "Index": {
+    "title": "Welcome to Mihrab",
+    "description": "Your Islamic companion"
+  },
+  "Error": {
+    "title": "Something went wrong!",
+    "description": "An unexpected error occurred in this section of the application.",
+    "tryAgain": "Try again"
+  }
+}

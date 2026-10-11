@@ -1,0 +1,20 @@
+---
+description: Enforce clean conventional commits with zero AI co-authorship attribution
+globs: *
+alwaysApply: true
+---
+
+# Git Commit Rules
+
+1. Every commit message must follow Conventional Commits format with an emoji:
+   - `✨ feat: ...`
+   - `🐛 fix: ...`
+   - `♻️ refactor: ...`
+   - `💄 style: ...`
+   - `📝 docs: ...`
+   - `⚡️ perf: ...`
+   - `🧪 test: ...`
+   - `🌐 i18n: ...`
+   - `🏗️ arch: ...`
+   - `🔧 chore: ...`
+2. **STRICT RULE:** NEVER add `Co-authored-by: Cursor <...>`, `Co-authored-by: Claude <...>`, or any AI attribution to commit messages. Commits must be clean human commits.

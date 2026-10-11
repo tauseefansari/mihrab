@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Sanitizes commit message to strip any AI co-authorship trailers
+COMMIT_MSG_FILE="$1"
+
+if [ -f "$COMMIT_MSG_FILE" ]; then
+  # Remove any Co-authored-by trailer referencing AI tools
+  sed -i.bak -E '/Co-authored-by:.*(Cursor|Claude|Copilot|AI|assistant|Anthropic|OpenAI)/Id' "$COMMIT_MSG_FILE"
+  rm -f "${COMMIT_MSG_FILE}.bak"
+fi

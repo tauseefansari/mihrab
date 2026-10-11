@@ -1,26 +1,25 @@
 {
-  "name": "mihrab",
+  "name": "mihrab-monorepo",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.5.2",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.3.0",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "preinstall": "npx only-allow pnpm",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type:check": "turbo run type:check",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "prebuild": "pnpm run format:check && pnpm run lint && pnpm run type:check && pnpm run test:coverage"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.0",
-    "tailwindcss": "^4",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "turbo": "^2.4.4",
     "typescript": "^5"
   }
 }

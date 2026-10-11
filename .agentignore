@@ -1,0 +1,24 @@
+# Ignore heavy files and build outputs to save AI context tokens
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+.turbo/
+.vitest-cache/
+.graphify/
+graph.json
+graphify-out/
+*.tsbuildinfo
+pnpm-lock.yaml
+package-lock.json
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.webp
+*.mp4
+*.pdf
+test-results/
+playwright-report/

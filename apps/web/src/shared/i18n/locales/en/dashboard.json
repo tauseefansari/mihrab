@@ -1,0 +1,19 @@
+{
+  "greeting": "As-salamu alaykum",
+  "date": "Dhu al-Hijjah 14, 1445 AH",
+  "nextPrayer": "Next Prayer",
+  "asr": "Asr",
+  "inTime": "in 2h 15m",
+  "location": "London, UK",
+  "fajr": "Fajr",
+  "dhuhr": "Dhuhr",
+  "maghrib": "Maghrib",
+  "isha": "Isha",
+  "verseOfTheDay": "Verse of the Day",
+  "verseArabic": "فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ",
+  "verseTranslation": "&quot;So remember Me; I will remember you. And be grateful to Me and do not deny Me.&quot;",
+  "verseReference": "Al-Baqarah 2:152",
+  "qiblaDirection": "Qibla Direction from London",
+  "dailyGoalProgress": "Daily Goal Progress",
+  "tasksCompleted": "3 of 4 planned tasks completed"
+}
