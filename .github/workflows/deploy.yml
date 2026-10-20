@@ -33,6 +33,7 @@ jobs:
           DATABASE_URL: 'postgres://mock:mock@mock.neondatabase.app/mock'
 
       - name: Deploy to Vercel
+        if: ${{ secrets.VERCEL_TOKEN != '' }}
         uses: amondnet/vercel-action@v42
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
