@@ -1,7 +1,7 @@
 {
-  ".": "0.1.0",
-  "apps/web": "0.1.0",
-  "packages/eslint-config": "0.1.0",
+  ".": "0.1.1",
+  "apps/web": "0.1.1",
+  "packages/eslint-config": "0.1.1",
   "packages/prettier-config": "0.1.0",
   "packages/typescript-config": "0.1.0",
   "packages/vitest-config": "0.1.0"
