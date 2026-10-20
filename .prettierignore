@@ -8,3 +8,5 @@ coverage
 pnpm-lock.yaml
 .graphify
 graph.json
+CHANGELOG.md
+**/CHANGELOG.md
