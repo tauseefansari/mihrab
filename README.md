@@ -23,6 +23,9 @@
   <a href="https://vitest.dev">
     <img src="https://img.shields.io/badge/Coverage-99%25-brightgreen?style=flat&logo=vitest" alt="Test Coverage" />
   </a>
+  <a href="https://semver.org">
+    <img src="https://img.shields.io/badge/SemVer-2.0.0-blue?style=flat" alt="SemVer 2.0.0" />
+  </a>
   <a href="https://gitmoji.dev">
     <img src="https://img.shields.io/badge/Gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg?style=flat" alt="Gitmoji" />
   </a>
@@ -177,6 +180,7 @@ Run all commands from the root directory via `pnpm`:
 - **Bi-Directional Logical Styling:** Physical directional utilities (`ml-*`, `pr-*`, `text-left`) are strictly prohibited in favor of logical equivalents (`ms-*`, `pe-*`, `text-start`).
 - **Server Actions & Service Layer:** UI components never write raw database queries. Data operations flow through dedicated services in `src/core/services/*`.
 - **Gitmojis & Clean Commits:** All commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification prefixed with [Gitmojis](https://gitmoji.dev) (e.g. `✨ feat(tasbeeh): add haptic vibration feedback`).
+- **Semantic Versioning & Automated Releases:** Versioning follows [SemVer 2.0.0](https://semver.org/) orchestrated by [Release Please](https://github.com/googleapis/release-please). Conventional Commits merged to `main` automatically produce release PRs with synchronized `CHANGELOG.md` generation, tag creation, and GitHub Releases.
 
 ---
 
