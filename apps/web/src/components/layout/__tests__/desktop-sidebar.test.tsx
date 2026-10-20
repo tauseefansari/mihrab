@@ -23,6 +23,9 @@ describe('DesktopSidebar', () => {
     const homeLink = screen.getByRole('link', { name: /home/i });
     expect(homeLink).toHaveAttribute('href', '/');
 
+    const qiblahLink = screen.getByRole('link', { name: /qiblah/i });
+    expect(qiblahLink).toHaveAttribute('href', '/qiblah');
+
     const settingsLink = screen.getByRole('link', { name: /settings/i });
     expect(settingsLink).toHaveAttribute('href', '/settings');
   });

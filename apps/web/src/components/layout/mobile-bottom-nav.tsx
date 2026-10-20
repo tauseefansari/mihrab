@@ -54,6 +54,7 @@ export function MobileBottomNav() {
       <MobileNavItem href="/" icon="House" label={t('home')} isActive />
       <MobileNavItem href="/quran" icon="BookOpen" label={t('quran')} />
       <MobileNavItem href="/prayers" icon="Clock" label={t('prayers')} />
+      <MobileNavItem href="/qiblah" icon="Compass" label={t('qiblah')} />
       <MobileNavItem href="/library" icon="Library" label={t('library')} />
     </Box>
   );

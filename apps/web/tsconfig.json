@@ -13,8 +13,7 @@
     ".next/types/**/*.ts",
     "vitest.config.ts",
     "vitest.setup.ts",
-    "playwright.config.ts",
-    ".next/dev/types/**/*.ts"
+    "playwright.config.ts"
   ],
   "exclude": ["node_modules"]
 }

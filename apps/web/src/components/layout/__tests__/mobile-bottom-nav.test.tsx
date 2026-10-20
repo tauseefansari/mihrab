@@ -13,9 +13,13 @@ describe('MobileBottomNav', () => {
     expect(screen.getByText('home')).toBeInTheDocument();
     expect(screen.getByText('quran')).toBeInTheDocument();
     expect(screen.getByText('prayers')).toBeInTheDocument();
+    expect(screen.getByText('qiblah')).toBeInTheDocument();
     expect(screen.getByText('library')).toBeInTheDocument();
 
     const homeLink = screen.getByRole('link', { name: /home/i });
     expect(homeLink).toHaveAttribute('href', '/');
+
+    const qiblahLink = screen.getByRole('link', { name: /qiblah/i });
+    expect(qiblahLink).toHaveAttribute('href', '/qiblah');
   });
 });

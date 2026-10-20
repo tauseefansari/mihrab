@@ -7,11 +7,16 @@ vi.mock('next-intl/server', () => ({
 }));
 
 describe('QiblaWidget component', () => {
-  it('renders compass bearing and translated direction label', async () => {
+  it('renders compass bearing, translated direction label, and links to /qiblah', async () => {
     const Component = await QiblaWidget();
     render(Component);
 
     expect(screen.getByText('trans_qiblaDegrees')).toBeInTheDocument();
     expect(screen.getByText('trans_qiblaDirection')).toBeInTheDocument();
+
+    const link = screen.getByRole('link', {
+      name: /trans_qiblaDegrees - trans_qiblaDirection/i,
+    });
+    expect(link).toHaveAttribute('href', '/qiblah');
   });
 });

@@ -1,0 +1,23 @@
+{
+  "title": "Qiblah",
+  "subtitle": "Align yourself towards Mecca",
+  "angle": "Angle",
+  "distance": "Distance",
+  "km": "km",
+  "instruction": "Hold your device flat and rotate to align with the Qiblah.",
+  "aligned": "Aligned with Qiblah",
+  "enableSensors": "Enable Compass Sensors",
+  "detectLocation": "Use Current Location",
+  "selectCity": "Select City",
+  "location": "Location",
+  "cardinal": {
+    "N": "N",
+    "NE": "NE",
+    "E": "E",
+    "SE": "SE",
+    "S": "S",
+    "SW": "SW",
+    "W": "W",
+    "NW": "NW"
+  }
+}
