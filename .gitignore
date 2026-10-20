@@ -1,61 +1,86 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ──────────────────────────────────────────────
+# Mihrab — Git Ignore
+# ──────────────────────────────────────────────
 
-# dependencies
+# Dependencies
 node_modules/
 .pnp
 .pnp.js
 .yarn/install-state.gz
+.pnpm-store/
 
-# testing & coverage
+# Testing & Coverage
 coverage/
 .nyc_output
 .vitest-cache/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
-# next.js build
+# Next.js Build & Outputs
 .next/
 out/
 build/
 dist/
+next-env.d.ts
+
+# Progressive Web App (Serwist)
 **/public/sw.js
 **/public/sw.js.map
 **/public/swe-worker-*.js
 .serwist/
 
-# turborepo
+# Turborepo Cache
 .turbo/
 
-# Graphify & Knowledge Graph Artifacts (Token Optimization)
-.graphify
-graph.json
-graphify-out/
-*.graph.json
+# Drizzle Studio & Local Database Cache
+.drizzle/
 
-# TypeScript build info
+# TypeScript Build Info
 *.tsbuildinfo
-next-env.d.ts
 
-# production
-/build
+# Local Environment Variables
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+!apps/web/.env.example
 
-# misc
+# Operating System & IDE Files
 .DS_Store
-*.pem
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
 
-# debug logs
+# Vercel Deployment Metadata
+.vercel/
+
+# Debug Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
-.env
+# Graphify & Knowledge Graph Artifacts
+.graphify/
+graph.json
+graphify-out/
+*.graph.json
 
-# vercel
-.vercel
-
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+# Certificates & Secrets
+*.pem
+*.key
