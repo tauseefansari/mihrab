@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "plugins": [
+    {
+      "type": "node-workspace"
+    }
+  ],
+  "changelog-sections": [
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "i18n", "section": "🌐 Internationalization" },
+    { "type": "arch", "section": "🏗️ Architecture" },
+    { "type": "refactor", "section": "♻️ Code Refactoring" },
+    { "type": "docs", "section": "📝 Documentation" },
+    { "type": "style", "section": "💄 Styles & UI" },
+    { "type": "test", "section": "🧪 Tests" },
+    { "type": "build", "section": "📦 Build System" },
+    { "type": "ci", "section": "👷 Continuous Integration" },
+    { "type": "chore", "section": "🔧 Miscellaneous Chores" }
+  ],
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "mihrab-monorepo",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    },
+    "apps/web": {
+      "release-type": "node",
+      "package-name": "@mihrab/web",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    },
+    "packages/eslint-config": {
+      "release-type": "node",
+      "package-name": "@mihrab/eslint-config",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    },
+    "packages/prettier-config": {
+      "release-type": "node",
+      "package-name": "@mihrab/prettier-config",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    },
+    "packages/typescript-config": {
+      "release-type": "node",
+      "package-name": "@mihrab/typescript-config",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    },
+    "packages/vitest-config": {
+      "release-type": "node",
+      "package-name": "@mihrab/vitest-config",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    }
+  }
+}
