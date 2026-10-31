@@ -28,11 +28,28 @@ describe('CompassDial', () => {
     expect(needleContainer).toBeInTheDocument();
   });
 
-  it('applies alignment glow styling when isAligned is true', () => {
+  it('applies alignment glow styling and active indicator crown when isAligned is true', () => {
     const { container } = render(<CompassDial needleAngle={0} isAligned={true} />);
 
-    const glowRing = container.querySelector('.border-primary\\/60');
+    const glowRing = container.querySelector('.border-primary\\/70');
     expect(glowRing).toBeInTheDocument();
+
+    const activeCrown = container.querySelector('.animate-pulse');
+    expect(activeCrown).toBeInTheDocument();
+  });
+
+  it('renders dedicated Makkah Kaaba icon by default or when sanctuary is makkah', () => {
+    const { container } = render(<CompassDial needleAngle={0} sanctuary="makkah" />);
+    // Kaaba icon contains line with stroke="#f59e0b" for golden Kiswah
+    const kiswah = container.querySelector('line[stroke="#f59e0b"]');
+    expect(kiswah).toBeInTheDocument();
+  });
+
+  it('renders dedicated Madinah Green Dome icon when sanctuary is madinah', () => {
+    const { container } = render(<CompassDial needleAngle={0} sanctuary="madinah" />);
+    // Madinah Green Dome path has fill="#10b981"
+    const dome = container.querySelector('path[fill="#10b981"]');
+    expect(dome).toBeInTheDocument();
   });
 
   it('accepts custom className and ariaLabel', () => {

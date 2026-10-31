@@ -1,15 +1,8 @@
-export interface CityPreset {
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-}
+export type SanctuaryId = 'makkah' | 'madinah';
 
-export interface QiblahState {
-  latitude: number;
-  longitude: number;
-  cityName: string;
-  heading: number;
-  isCompassSupported: boolean;
-  permissionState: 'prompt' | 'granted' | 'denied';
+export type SanctuaryLabelKey = 'sanctuaries.makkah' | 'sanctuaries.madinah';
+
+export interface SanctuaryOption {
+  id: SanctuaryId;
+  labelKey: SanctuaryLabelKey;
 }

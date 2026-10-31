@@ -8,8 +8,9 @@
   "zakat": "Zakat",
   "settings": "Settings",
   "brandName": "Al-Mihrab",
-  "notifications": "Notifications",
   "profile": "Profile",
   "menu": "Menu",
-  "account": "Account"
+  "account": "Account",
+  "close": "Close",
+  "navigationMenu": "Navigation Menu"
 }

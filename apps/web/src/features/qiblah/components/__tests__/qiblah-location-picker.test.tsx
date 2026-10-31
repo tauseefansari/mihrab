@@ -1,81 +1,69 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import {
-  QiblahLocationPicker,
-  POPULAR_CITIES,
-} from '@/features/qiblah/components/qiblah-location-picker';
+import { QiblahLocationPicker } from '@/features/qiblah/components/qiblah-location-picker';
+
+const SANCTUARY_MAKKAH = 'sanctuaries.makkah';
+const SANCTUARY_MADINAH = 'sanctuaries.madinah';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
 describe('QiblahLocationPicker', () => {
-  it('renders current city and detect location button', () => {
-    const handleSelect = vi.fn();
-    const handleDetect = vi.fn();
+  it('renders current city and sanctuary options', () => {
+    render(<QiblahLocationPicker currentCity="London" />);
 
-    render(
-      <QiblahLocationPicker
-        currentCity="London"
-        onSelectCity={handleSelect}
-        onDetectGps={handleDetect}
-      />
-    );
-
-    expect(screen.getAllByText('London').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByRole('button', { name: /detectLocation/i })).toBeInTheDocument();
+    expect(screen.getByText('London')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: SANCTUARY_MAKKAH })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: SANCTUARY_MADINAH })).toBeInTheDocument();
   });
 
-  it('triggers onDetectGps when clicking detect location button', () => {
-    const handleSelect = vi.fn();
-    const handleDetect = vi.fn();
+  it('triggers onSelectSanctuary when clicking Madinah button', () => {
+    const handleSanctuary = vi.fn();
 
     render(
       <QiblahLocationPicker
         currentCity="London"
-        onSelectCity={handleSelect}
-        onDetectGps={handleDetect}
+        selectedSanctuary="makkah"
+        onSelectSanctuary={handleSanctuary}
       />
     );
 
-    const detectBtn = screen.getByRole('button', { name: /detectLocation/i });
-    fireEvent.click(detectBtn);
-    expect(handleDetect).toHaveBeenCalledTimes(1);
+    const madinahBtn = screen.getByRole('button', { name: SANCTUARY_MADINAH });
+    fireEvent.click(madinahBtn);
+    expect(handleSanctuary).toHaveBeenCalledWith('madinah');
   });
 
-  it('triggers onSelectCity when clicking a city preset', () => {
-    const handleSelect = vi.fn();
-    const handleDetect = vi.fn();
+  it('triggers onSelectSanctuary when clicking Makkah button', () => {
+    const handleSanctuary = vi.fn();
 
     render(
       <QiblahLocationPicker
         currentCity="London"
-        onSelectCity={handleSelect}
-        onDetectGps={handleDetect}
+        selectedSanctuary="madinah"
+        onSelectSanctuary={handleSanctuary}
       />
     );
 
-    const makkahBtn = screen.getByRole('button', { name: /Makkah/i });
+    const makkahBtn = screen.getByRole('button', { name: SANCTUARY_MAKKAH });
     fireEvent.click(makkahBtn);
-
-    const expectedCity = POPULAR_CITIES.find((c) => c.name === 'Makkah');
-    expect(handleSelect).toHaveBeenCalledWith(expectedCity);
+    expect(handleSanctuary).toHaveBeenCalledWith('makkah');
   });
 
-  it('disables detect GPS button when isDetectingGps is true', () => {
-    const handleSelect = vi.fn();
-    const handleDetect = vi.fn();
+  it('applies high-contrast text-white class to the active sanctuary button', () => {
+    render(<QiblahLocationPicker currentCity="London" selectedSanctuary="madinah" />);
 
-    render(
-      <QiblahLocationPicker
-        currentCity="London"
-        onSelectCity={handleSelect}
-        onDetectGps={handleDetect}
-        isDetectingGps={true}
-      />
-    );
+    const madinahBtn = screen.getByRole('button', { name: SANCTUARY_MADINAH });
+    const makkahBtn = screen.getByRole('button', { name: SANCTUARY_MAKKAH });
 
-    const detectBtn = screen.getByRole('button', { name: /detectLocation/i });
-    expect(detectBtn).toBeDisabled();
+    expect(madinahBtn.className).toContain('text-white');
+    expect(makkahBtn.className).not.toContain('text-white');
+  });
+
+  it('renders coordinates alongside current city when latitude and longitude provided', () => {
+    render(<QiblahLocationPicker currentCity="Mumbai" latitude={19.076} longitude={72.8777} />);
+
+    expect(screen.getByText('Mumbai')).toBeInTheDocument();
+    expect(screen.getByText('(19.08° N, 72.88° E)')).toBeInTheDocument();
   });
 });

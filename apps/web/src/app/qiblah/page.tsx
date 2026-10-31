@@ -7,17 +7,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Qiblah');
   return {
     title: t('title'),
-    description: t('subtitle'),
+    description: t('subtitle', { sanctuary: t('sanctuaries.makkah') }),
   };
 }
 
 export default function QiblahPage() {
   return (
-    <Box
-      as="div"
-      style={{ minHeight: 'calc(100vh - 8rem)' }}
-      className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center"
-    >
+    <Box as="div" className="flex w-full flex-col items-center py-2 md:py-6">
       <QiblahCompassCard />
     </Box>
   );

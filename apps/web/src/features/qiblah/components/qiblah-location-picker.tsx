@@ -1,73 +1,75 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import { Box } from '@/components/ui/box';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { Icon } from '@/components/ui/icon';
-import type { CityPreset } from '@/features/qiblah/types/qiblah.types';
-
-export const POPULAR_CITIES: CityPreset[] = [
-  { id: 'makkah', name: 'Makkah', latitude: 21.4225, longitude: 39.8262 },
-  { id: 'madinah', name: 'Madinah', latitude: 24.4686, longitude: 39.6142 },
-  { id: 'cairo', name: 'Cairo', latitude: 30.0444, longitude: 31.2357 },
-  { id: 'london', name: 'London', latitude: 51.5074, longitude: -0.1278 },
-  { id: 'new-york', name: 'New York', latitude: 40.7128, longitude: -74.006 },
-  { id: 'dubai', name: 'Dubai', latitude: 25.2048, longitude: 55.2708 },
-  { id: 'istanbul', name: 'Istanbul', latitude: 41.0082, longitude: 28.9784 },
-  { id: 'karachi', name: 'Karachi', latitude: 24.8607, longitude: 67.0011 },
-];
+import { SANCTUARY_OPTIONS } from '@/features/qiblah/constants/qiblah.constants';
+import { formatCoordinates } from '@/features/qiblah/utils/qiblah.utils';
+import type { SanctuaryId } from '@/features/qiblah/types/qiblah.types';
+import { cn } from '@/shared/utils/cn';
 
 export interface QiblahLocationPickerProps {
   currentCity: string;
-  onSelectCity: (preset: CityPreset) => void;
-  onDetectGps: () => void;
-  isDetectingGps?: boolean;
+  latitude?: number;
+  longitude?: number;
+  selectedSanctuary?: SanctuaryId;
+  onSelectSanctuary?: (sanctuary: SanctuaryId) => void;
+  className?: string;
 }
 
 export function QiblahLocationPicker({
   currentCity,
-  onSelectCity,
-  onDetectGps,
-  isDetectingGps = false,
+  latitude,
+  longitude,
+  selectedSanctuary = 'makkah',
+  onSelectSanctuary,
+  className,
 }: QiblahLocationPickerProps) {
   const t = useTranslations('Qiblah');
+  const formattedCoords =
+    latitude !== undefined && longitude !== undefined
+      ? formatCoordinates(latitude, longitude)
+      : null;
 
   return (
-    <Box as="div" className="gap-sm flex w-full max-w-md flex-col">
-      {/* GPS Detector Bar */}
-      <Box as="div" className="gap-xs flex items-center justify-between">
-        <Box as="div" className="gap-xs text-on-surface-variant flex items-center">
-          <Icon name="MapPin" size={16} className="text-primary" />
-          <Text as="span" variant="body-md" className="font-medium">
-            {currentCity}
+    <Box as="div" className={cn('gap-sm flex w-full max-w-96 flex-col items-center', className)}>
+      {/* City / Location Display */}
+      <Box
+        as="div"
+        className="gap-xs text-on-surface-variant flex items-center justify-center py-1"
+      >
+        <Icon name="MapPin" size={16} className="text-primary shrink-0" />
+        <Text as="span" variant="body-md" className="text-on-background font-medium">
+          {currentCity}
+        </Text>
+        {formattedCoords && (
+          <Text as="span" variant="label-sm" className="text-on-surface-variant">
+            ({formattedCoords})
           </Text>
-        </Box>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onDetectGps}
-          disabled={isDetectingGps}
-          aria-label={t('detectLocation')}
-          className="gap-xs flex items-center"
-        >
-          <Icon name="Navigation" size={14} />
-          {t('detectLocation')}
-        </Button>
+        )}
       </Box>
 
-      {/* Preset Cities Chips */}
-      <Box as="div" className="hide-scrollbar gap-xs flex w-full overflow-x-auto py-1">
-        {POPULAR_CITIES.map((city) => {
-          const isSelected = city.name === currentCity;
+      {/* Preset Sanctuaries Chips */}
+      <Box as="div" className="gap-xs flex w-full py-1">
+        {SANCTUARY_OPTIONS.map((option) => {
+          const isSelected = selectedSanctuary === option.id;
           return (
             <Button
-              key={city.id}
+              key={option.id}
               size="sm"
               variant={isSelected ? 'primary' : 'ghost'}
-              onClick={() => onSelectCity(city)}
-              aria-label={`${t('selectCity')}: ${city.name}`}
-              className="text-label-sm shrink-0 rounded-full whitespace-nowrap"
+              onClick={() => onSelectSanctuary?.(option.id)}
+              aria-label={t(option.labelKey)}
+              className={cn(
+                'text-label-sm flex-1 rounded-full whitespace-nowrap transition-all',
+                isSelected
+                  ? 'bg-primary dark:bg-primary-container dark:border-primary/30 font-medium text-white hover:text-white dark:border dark:text-white'
+                  : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-high/40'
+              )}
             >
-              {city.name}
+              {t(option.labelKey)}
             </Button>
           );
         })}

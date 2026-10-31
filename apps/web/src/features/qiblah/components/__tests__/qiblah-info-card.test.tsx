@@ -22,4 +22,13 @@ describe('QiblahInfoCard', () => {
     expect(screen.getByText('4,790')).toBeInTheDocument();
     expect(screen.getByText('km')).toBeInTheDocument();
   });
+
+  it('applies glowing highlight styling when isAligned is true', () => {
+    const { container } = render(
+      <QiblahInfoCard bearing={280} cardinal="W" distanceKm={3452} isAligned={true} />
+    );
+
+    const highlightedCard = container.querySelector('.bg-primary\\/10');
+    expect(highlightedCard).toBeInTheDocument();
+  });
 });

@@ -1,8 +1,13 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Icon, IconName } from '@/components/ui/icon';
 import { Link } from '@/components/ui/link';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
+import { ThemeSwitcher } from '@/components/ui/theme-switcher';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 interface NavItemProps {
   href: string;
@@ -16,6 +21,7 @@ const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
     return (
       <Link
         href={href}
+        aria-current="page"
         className="group gap-md border-primary bg-primary/10 px-md py-sm text-primary hover:bg-surface-container-highest flex items-center rounded-xl border-s-4 font-bold transition-all duration-200"
       >
         <Icon name={icon} size={24} />
@@ -43,11 +49,19 @@ const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
 
 export function DesktopSidebar() {
   const t = useTranslations('Nav');
+  const pathname = usePathname();
+
+  const isLinkActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <Box
       as="nav"
-      className="border-outline-variant/30 bg-surface p-md sticky top-0 z-50 hidden h-screen w-64 flex-col border-e md:flex"
+      className="border-outline-variant/30 bg-surface p-md sticky top-0 z-50 hidden h-screen w-64 shrink-0 flex-col border-e md:flex"
     >
       <Box as="div" className="mb-xl px-sm">
         <Text as="h1" variant="headline-lg" className="text-primary tracking-tight">
@@ -56,17 +70,51 @@ export function DesktopSidebar() {
       </Box>
 
       <Box as="div" className="hide-scrollbar space-y-unit flex-1 overflow-y-auto">
-        <NavItem href="/" icon="House" label={t('home')} isActive />
-        <NavItem href="/quran" icon="BookOpen" label={t('quran')} />
-        <NavItem href="/prayers" icon="Clock" label={t('prayers')} />
-        <NavItem href="/library" icon="Library" label={t('library')} />
-        <NavItem href="/tasbeeh" icon="Sun" label={t('tasbeeh')} />
-        <NavItem href="/qiblah" icon="Compass" label={t('qiblah')} />
-        <NavItem href="/zakat" icon="Coins" label={t('zakat')} />
+        <NavItem href="/" icon="House" label={t('home')} isActive={isLinkActive('/')} />
+        <NavItem
+          href="/quran"
+          icon="BookOpen"
+          label={t('quran')}
+          isActive={isLinkActive('/quran')}
+        />
+        <NavItem
+          href="/prayers"
+          icon="Clock"
+          label={t('prayers')}
+          isActive={isLinkActive('/prayers')}
+        />
+        <NavItem
+          href="/library"
+          icon="Library"
+          label={t('library')}
+          isActive={isLinkActive('/library')}
+        />
+        <NavItem
+          href="/tasbeeh"
+          icon="Sun"
+          label={t('tasbeeh')}
+          isActive={isLinkActive('/tasbeeh')}
+        />
+        <NavItem
+          href="/qiblah"
+          icon="Compass"
+          label={t('qiblah')}
+          isActive={isLinkActive('/qiblah')}
+        />
+        <NavItem href="/zakat" icon="Coins" label={t('zakat')} isActive={isLinkActive('/zakat')} />
       </Box>
 
-      <Box as="div" className="border-outline-variant/20 pt-md mt-auto border-t">
-        <NavItem href="/settings" icon="Settings" label={t('settings')} />
+      <Box as="div" className="border-outline-variant/20 pt-md space-y-sm mt-auto border-t">
+        <NavItem
+          href="/settings"
+          icon="Settings"
+          label={t('settings')}
+          isActive={isLinkActive('/settings')}
+        />
+        <Box as="div" className="gap-xs pt-xs flex items-center justify-between">
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+        </Box>
       </Box>
     </Box>
   );

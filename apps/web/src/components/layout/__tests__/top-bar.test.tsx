@@ -1,17 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { TopBar } from '@/components/layout/top-bar';
+import { useMobileDrawer } from '@/components/layout/use-mobile-drawer';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
-}));
-
-vi.mock('@/components/ui/theme-switcher', () => ({
-  ThemeSwitcher: () => <div data-testid="theme-switcher" />,
-}));
-
-vi.mock('@/components/ui/language-switcher', () => ({
-  LanguageSwitcher: () => <div data-testid="language-switcher" />,
 }));
 
 describe('TopBar', () => {
@@ -19,10 +12,17 @@ describe('TopBar', () => {
     render(<TopBar />);
 
     expect(screen.getByText('brandName')).toBeInTheDocument();
-    expect(screen.getByTestId('theme-switcher')).toBeInTheDocument();
-    expect(screen.getByTestId('language-switcher')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'menu' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'notifications' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'notifications' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'account' })).toBeInTheDocument();
+  });
+
+  it('triggers mobile drawer open on menu button click', () => {
+    render(<TopBar />);
+
+    const menuBtn = screen.getByRole('button', { name: 'menu' });
+    fireEvent.click(menuBtn);
+
+    expect(useMobileDrawer.getState().isOpen).toBe(true);
   });
 });

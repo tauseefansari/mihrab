@@ -1,14 +1,18 @@
 {
   "title": "Qiblah",
-  "subtitle": "Align yourself towards Mecca",
+  "subtitle": "Align yourself towards {sanctuary}",
+  "alignTowards": "Align yourself towards {sanctuary}",
   "angle": "Angle",
   "distance": "Distance",
   "km": "km",
   "instruction": "Hold your device flat and rotate to align with the Qiblah.",
   "aligned": "Aligned with Qiblah",
-  "enableSensors": "Enable Compass Sensors",
-  "detectLocation": "Use Current Location",
-  "selectCity": "Select City",
+  "enableCompass": "Enable Compass",
+  "permissionDeniedNotice": "Sensor permission is blocked by your browser. Please allow motion access in site settings to use the live compass.",
+  "sanctuaries": {
+    "makkah": "Makkah",
+    "madinah": "Madinah"
+  },
   "location": "Location",
   "cardinal": {
     "N": "N",

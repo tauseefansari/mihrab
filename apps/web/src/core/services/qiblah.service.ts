@@ -20,6 +20,11 @@ export const KAABA_COORDINATES: Coordinates = {
   longitude: 39.826206,
 };
 
+export const PROPHET_MOSQUE_COORDINATES: Coordinates = {
+  latitude: 24.4686,
+  longitude: 39.6142,
+};
+
 export const EARTH_RADIUS_KM = 6371;
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -31,10 +36,14 @@ export class QiblahService {
     return (remainder + 360) % 360;
   }
 
-  public static calculateBearing(userLat: number, userLng: number): number {
+  public static calculateBearing(
+    userLat: number,
+    userLng: number,
+    target: Coordinates = KAABA_COORDINATES
+  ): number {
     const phi1 = userLat * DEG_TO_RAD;
-    const phi2 = KAABA_COORDINATES.latitude * DEG_TO_RAD;
-    const deltaLambda = (KAABA_COORDINATES.longitude - userLng) * DEG_TO_RAD;
+    const phi2 = target.latitude * DEG_TO_RAD;
+    const deltaLambda = (target.longitude - userLng) * DEG_TO_RAD;
 
     const y = Math.sin(deltaLambda) * Math.cos(phi2);
     const x =
@@ -44,11 +53,15 @@ export class QiblahService {
     return Math.round(this.normalizeAngle(initialBearing));
   }
 
-  public static calculateDistanceKm(userLat: number, userLng: number): number {
+  public static calculateDistanceKm(
+    userLat: number,
+    userLng: number,
+    target: Coordinates = KAABA_COORDINATES
+  ): number {
     const phi1 = userLat * DEG_TO_RAD;
-    const phi2 = KAABA_COORDINATES.latitude * DEG_TO_RAD;
-    const deltaPhi = (KAABA_COORDINATES.latitude - userLat) * DEG_TO_RAD;
-    const deltaLambda = (KAABA_COORDINATES.longitude - userLng) * DEG_TO_RAD;
+    const phi2 = target.latitude * DEG_TO_RAD;
+    const deltaPhi = (target.latitude - userLat) * DEG_TO_RAD;
+    const deltaLambda = (target.longitude - userLng) * DEG_TO_RAD;
 
     const a =
       Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
@@ -84,9 +97,13 @@ export class QiblahService {
     };
   }
 
-  public static calculateQiblah(userLat: number, userLng: number): QiblahCalculationResult {
-    const bearing = this.calculateBearing(userLat, userLng);
-    const distanceKm = this.calculateDistanceKm(userLat, userLng);
+  public static calculateQiblah(
+    userLat: number,
+    userLng: number,
+    target: Coordinates = KAABA_COORDINATES
+  ): QiblahCalculationResult {
+    const bearing = this.calculateBearing(userLat, userLng, target);
+    const distanceKm = this.calculateDistanceKm(userLat, userLng, target);
     const cardinal = this.getCardinalDirection(bearing);
 
     return {

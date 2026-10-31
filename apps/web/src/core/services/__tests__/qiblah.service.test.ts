@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { QiblahService, KAABA_COORDINATES } from '@/core/services/qiblah.service';
+import {
+  QiblahService,
+  KAABA_COORDINATES,
+  PROPHET_MOSQUE_COORDINATES,
+} from '@/core/services/qiblah.service';
 
 describe('QiblahService', () => {
   describe('normalizeAngle', () => {
@@ -110,6 +114,19 @@ describe('QiblahService', () => {
       expect(result.bearing).toBe(119);
       expect(result.cardinal).toBe('ESE' === result.cardinal ? 'ESE' : 'SE');
       expect(result.distanceKm).toBeGreaterThan(4000);
+    });
+
+    it('calculates direction and distance to Prophet Mosque in Madinah', () => {
+      const result = QiblahService.calculateQiblah(51.5074, -0.1278, PROPHET_MOSQUE_COORDINATES);
+      expect(result.bearing).toBe(116);
+      expect(result.distanceKm).toBeGreaterThan(4000);
+
+      const atMadinah = QiblahService.calculateDistanceKm(
+        PROPHET_MOSQUE_COORDINATES.latitude,
+        PROPHET_MOSQUE_COORDINATES.longitude,
+        PROPHET_MOSQUE_COORDINATES
+      );
+      expect(atMadinah).toBe(0);
     });
   });
 });
