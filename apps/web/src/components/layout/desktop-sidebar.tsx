@@ -8,6 +8,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { ThemeSwitcher } from '@/components/ui/theme-switcher';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { handleArrowNavigation } from '@/shared/utils/keyboard-nav';
 
 interface NavItemProps {
   href: string;
@@ -22,7 +23,7 @@ const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
       <Link
         href={href}
         aria-current="page"
-        className="group gap-md border-primary bg-primary/10 px-md py-sm text-primary hover:bg-surface-container-highest flex items-center rounded-xl border-s-4 font-bold transition-all duration-200"
+        className="group gap-md border-primary bg-primary/10 px-md py-sm text-primary hover:bg-primary/20 dark:hover:bg-primary/20 focus-visible:ring-primary focus-visible:ring-offset-surface flex items-center rounded-xl border-s-4 font-bold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <Icon name={icon} size={24} />
         <Text as="span" variant="body-md">
@@ -35,7 +36,7 @@ const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
   return (
     <Link
       href={href}
-      className="group gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high flex items-center rounded-xl transition-all duration-200"
+      className="group gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest focus-visible:ring-primary focus-visible:ring-offset-surface flex items-center rounded-xl transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       <Box as="div" className="transition-transform group-hover:translate-x-1">
         <Icon name={icon} size={24} />
@@ -61,6 +62,8 @@ export function DesktopSidebar() {
   return (
     <Box
       as="nav"
+      aria-label={t('navigationMenu')}
+      onKeyDown={handleArrowNavigation}
       className="border-outline-variant/30 bg-surface p-md sticky top-0 z-50 hidden h-screen w-64 shrink-0 flex-col border-e md:flex"
     >
       <Box as="div" className="mb-xl px-sm">
@@ -69,7 +72,7 @@ export function DesktopSidebar() {
         </Text>
       </Box>
 
-      <Box as="div" className="hide-scrollbar space-y-unit flex-1 overflow-y-auto">
+      <Box as="div" className="hide-scrollbar space-y-unit -m-1.5 flex-1 overflow-y-auto p-1.5">
         <NavItem href="/" icon="House" label={t('home')} isActive={isLinkActive('/')} />
         <NavItem
           href="/quran"

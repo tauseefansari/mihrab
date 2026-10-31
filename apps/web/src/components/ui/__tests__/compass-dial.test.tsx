@@ -3,13 +3,18 @@ import { render, screen } from '@testing-library/react';
 import { CompassDial } from '@/components/ui/compass-dial';
 
 describe('CompassDial', () => {
-  it('renders with default accessibility role and label', () => {
-    render(<CompassDial needleAngle={45} />);
+  it('renders with accessibility role and label when ariaLabel provided', () => {
+    render(<CompassDial needleAngle={45} ariaLabel="Compass dial pointing toward Qiblah" />);
 
     const dial = screen.getByRole('img', {
       name: /compass dial pointing toward qiblah/i,
     });
     expect(dial).toBeInTheDocument();
+  });
+
+  it('renders with aria-hidden when no ariaLabel is provided', () => {
+    const { container } = render(<CompassDial needleAngle={45} />);
+    expect(container.firstChild).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('renders all cardinal rose direction indicators', () => {

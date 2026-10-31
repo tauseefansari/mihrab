@@ -36,6 +36,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@mihrab/eslint-config": "workspace:*",
     "@mihrab/prettier-config": "workspace:*",
     "@mihrab/typescript-config": "workspace:*",

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 const QIBLAH_ROUTE = '/qiblah';
 const COMPASS_DIAL_SELECTOR = '[role="img"]';
@@ -21,10 +22,24 @@ test.describe('Qiblah Feature E2E', () => {
     await expect(page.getByRole('heading', { name: /Qiblah/i, level: 1 })).toBeVisible();
 
     // Verify sanctuary switcher at top
-    const makkahBtn = page.getByRole('button', { name: 'Makkah' });
-    const madinahBtn = page.getByRole('button', { name: 'Madinah' });
+    const makkahBtn = page.getByRole('radio', { name: 'Makkah' });
+    const madinahBtn = page.getByRole('radio', { name: 'Madinah' });
     await expect(makkahBtn).toBeVisible();
     await expect(madinahBtn).toBeVisible();
+
+    // Verify accessibility in light mode
+    const lightA11y = await new AxeBuilder({ page }).analyze();
+    expect(lightA11y.violations).toEqual([]);
+
+    // Verify accessibility in dark mode
+    await page.evaluate(() => document.documentElement.classList.add('dark'));
+    await page.waitForTimeout(200);
+    const darkA11y = await new AxeBuilder({ page }).analyze();
+    expect(darkA11y.violations).toEqual([]);
+
+    // Restore light mode for screenshot
+    await page.evaluate(() => document.documentElement.classList.remove('dark'));
+    await page.waitForTimeout(200);
 
     // Verify compass dial
     const dial = page.locator(COMPASS_DIAL_SELECTOR);
@@ -39,7 +54,11 @@ test.describe('Qiblah Feature E2E', () => {
 
     // Switch to Madinah
     await madinahBtn.click();
-    await expect(page.getByText(/Madinah/i).first()).toBeVisible();
+    await expect(madinahBtn).toHaveAttribute('aria-checked', 'true');
+    await expect(makkahBtn).toHaveAttribute('aria-checked', 'false');
+    await expect(madinahBtn).toHaveClass(/bg-primary/);
+    await expect(makkahBtn).not.toHaveClass(/bg-primary/);
+    await expect(page.getByText(/towards Madinah/i)).toBeVisible();
 
     // Full page snapshot for Madinah sanctuary on desktop
     await page.screenshot({ path: 'test-results/desktop-qiblah-madinah.png', fullPage: true });
@@ -71,8 +90,8 @@ test.describe('Qiblah Feature E2E', () => {
     await expect(scrollContainer).toHaveClass(/pb-28/);
 
     // Verify compass dial and sanctuary switcher on mobile
-    await expect(page.getByRole('button', { name: 'Makkah' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Madinah' })).toBeVisible();
+    await expect(page.getByRole('radio', { name: 'Makkah' })).toBeVisible();
+    await expect(page.getByRole('radio', { name: 'Madinah' })).toBeVisible();
     await expect(page.locator(COMPASS_DIAL_SELECTOR)).toBeVisible();
 
     // Bottom navigation is fixed at bottom
@@ -178,6 +197,49 @@ test.describe('Qiblah Feature E2E', () => {
 
     // Full page snapshot of aligned state
     await page.screenshot({ path: 'test-results/qiblah-aligned-success.png', fullPage: true });
+
+    expect(consoleErrors).toHaveLength(0);
+  });
+
+  test('Compass Calibration & Sound Controls: open guide, toggle sound, and full-page snapshot', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    await page.goto(QIBLAH_ROUTE);
+
+    // Sound toggle control
+    const soundToggleBtn = page.getByRole('button', { name: /sound off/i });
+    await expect(soundToggleBtn).toBeVisible();
+
+    await soundToggleBtn.click();
+    await expect(page.getByRole('button', { name: /sound on/i })).toBeVisible();
+
+    // Calibration control
+    const calibrateBtn = page.getByRole('button', { name: /calibrate/i });
+    await expect(calibrateBtn).toBeVisible();
+
+    await calibrateBtn.click();
+
+    // Verify calibration banner with figure-8 illustration
+    await expect(page.getByText(/Calibrate Compass/i)).toBeVisible();
+    await expect(
+      page.getByRole('img', { name: /figure-8 calibration motion illustration/i })
+    ).toBeVisible();
+
+    // Full page snapshot of calibration guide on mobile
+    await page.screenshot({ path: 'test-results/qiblah-calibration-banner.png', fullPage: true });
+
+    // Dismiss calibration banner
+    const doneButtons = page.getByRole('button', { name: /done/i });
+    await doneButtons.first().click();
+    await expect(page.getByText(/Calibrate Compass/i)).not.toBeVisible();
 
     expect(consoleErrors).toHaveLength(0);
   });

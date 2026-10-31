@@ -1,7 +1,6 @@
 {
   "title": "قبلہ",
   "subtitle": "اپنے آلے کو {sanctuary} کی طرف سیدھ میں رکھیں",
-  "alignTowards": "اپنے آلے کو {sanctuary} کی طرف سیدھ میں رکھیں",
   "angle": "زاویہ",
   "distance": "فاصلہ",
   "km": "کلومیٹر",
@@ -9,11 +8,21 @@
   "aligned": "قبلہ کے رخ کے ساتھ ہم آہنگ",
   "enableCompass": "کمپاس فعال کریں",
   "permissionDeniedNotice": "آپ کے براؤزر نے موشن سینسر کی اجازت بلاک کر دی ہے۔ براہ کرم لائیو کمپاس کے لیے سائٹ ترتیبات میں اجازت دیں۔",
+  "calibrate": "کیلیبریٹ",
+  "compass": "قطب نما",
+  "calibrateTitle": "قطب نما کیلیبریٹ کریں",
+  "calibrateInstruction": "حساسات کی درستگی کے لیے اپنے آلے کو 8 کی شکل میں گھمائیں۔",
+  "calibrationDone": "مکمل",
+  "calibrationIllustration": "کیلیبریشن کی علامت برائے حرکت شکل 8",
+  "soundOn": "آواز آن",
+  "soundOff": "آواز بند",
+  "selectSanctuary": "قبلہ یا روضہ منتخب کریں",
+  "defaultCity": "ممبئی",
+  "compassDialAria": "قطب نما جو {sanctuary} کی سمت ظاہر کر رہا ہے",
   "sanctuaries": {
     "makkah": "مکہ مکرمہ",
     "madinah": "مدینہ منورہ"
   },
-  "location": "مقام",
   "cardinal": {
     "N": "شمال",
     "NE": "ش.م",

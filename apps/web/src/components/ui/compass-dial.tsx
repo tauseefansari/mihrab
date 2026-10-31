@@ -1,5 +1,5 @@
-import type { CSSProperties } from 'react';
 import { cn } from '@/shared/utils/cn';
+import { SanctuaryIcon } from '@/components/ui/sanctuary-icon';
 
 export interface CompassLabels {
   north: string;
@@ -10,11 +10,11 @@ export interface CompassLabels {
 
 export interface CompassDialProps {
   needleAngle: number;
-  isAligned?: boolean;
-  className?: string;
-  ariaLabel?: string;
-  labels?: CompassLabels;
-  sanctuary?: 'makkah' | 'madinah';
+  isAligned?: boolean | undefined;
+  className?: string | undefined;
+  ariaLabel?: string | undefined;
+  labels?: CompassLabels | undefined;
+  sanctuary?: 'makkah' | 'madinah' | undefined;
 }
 
 const DEFAULT_LABELS: CompassLabels = {
@@ -22,11 +22,6 @@ const DEFAULT_LABELS: CompassLabels = {
   south: 'S',
   west: 'W',
   east: 'E',
-};
-
-const ALIGNED_RING_STYLE: CSSProperties = {
-  boxShadow: '0 0 50px rgba(16, 185, 129, 0.4), inset 0 0 25px rgba(16, 185, 129, 0.25)',
-  transform: 'scale(1.025)',
 };
 
 function AlignmentIndicator({ isAligned }: { isAligned: boolean }) {
@@ -63,67 +58,6 @@ function RoseMarkings({ labels }: { labels: CompassLabels }) {
         {labels.east}
       </span>
     </div>
-  );
-}
-
-function KaabaIcon({ className, size = 18 }: { className?: string; size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
-      {/* Kaaba Cube Silhouette */}
-      <rect x="4" y="6" width="16" height="14" rx="2" className="fill-current" />
-      {/* Golden Kiswah Band */}
-      <line x1="4" y1="10" x2="20" y2="10" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" />
-      {/* Golden Kaaba Door */}
-      <rect x="13" y="12" width="4" height="6" rx="0.75" fill="#f59e0b" />
-    </svg>
-  );
-}
-
-function MadinahIcon({ className, size = 18 }: { className?: string; size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
-      {/* Prophet's Mosque Green Dome */}
-      <path
-        d="M6 14C6 8.5 12 5.5 12 5.5C12 5.5 18 8.5 18 14H6Z"
-        fill="#10b981"
-        stroke="#059669"
-        strokeWidth="1"
-      />
-      {/* Golden Finial */}
-      <line
-        x1="12"
-        y1="2.5"
-        x2="12"
-        y2="5.5"
-        stroke="#f59e0b"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <circle cx="12" cy="2" r="1" fill="#f59e0b" />
-      {/* Base Wall & Arches */}
-      <rect x="4" y="14" width="16" height="6" rx="1" className="fill-current opacity-90" />
-      <path
-        d="M8 20V17C8 16.4477 8.44772 16 9 16C9.55228 16 10 16.4477 10 17V20M14 20V17C14 16.4477 14.4477 16 15 16C15.5523 16 16 16.4477 16 17V20"
-        stroke="var(--surface-container-lowest, #0c0f0c)"
-        strokeWidth="1.2"
-      />
-    </svg>
   );
 }
 
@@ -175,11 +109,7 @@ function CompassNeedle({
               : 'border-primary/70 dark:border-primary/90 shadow-lg'
           )}
         >
-          {sanctuary === 'madinah' ? (
-            <MadinahIcon size={18} className="text-primary" />
-          ) : (
-            <KaabaIcon size={18} className="text-primary" />
-          )}
+          <SanctuaryIcon sanctuary={sanctuary} size={18} className="text-primary" />
         </div>
       </div>
 
@@ -192,12 +122,15 @@ function CompassNeedle({
           className="overflow-visible"
           aria-hidden="true"
         >
-          {/* Left Facet: Bright silver/white */}
-          <polygon points="13,66 0,0 13,8" className="fill-slate-200 dark:fill-slate-100" />
-          {/* Right Facet: Steel silver for 3D depth */}
-          <polygon points="13,66 13,8 26,0" className="fill-slate-400 dark:fill-slate-300" />
+          {/* Left Facet: Bright surface facet */}
+          <polygon
+            points="13,66 0,0 13,8"
+            className="fill-surface-container-highest dark:fill-surface-bright"
+          />
+          {/* Right Facet: Outline facet for 3D depth */}
+          <polygon points="13,66 13,8 26,0" className="fill-outline-variant dark:fill-outline" />
           {/* Center crease line */}
-          <line x1="13" y1="8" x2="13" y2="66" className="stroke-slate-500/40" strokeWidth="1" />
+          <line x1="13" y1="8" x2="13" y2="66" className="stroke-outline/40" strokeWidth="1" />
         </svg>
       </div>
     </div>
@@ -208,7 +141,7 @@ export function CompassDial({
   needleAngle,
   isAligned = false,
   className,
-  ariaLabel = 'Compass dial pointing toward Qiblah',
+  ariaLabel,
   labels = DEFAULT_LABELS,
   sanctuary = 'makkah',
 }: CompassDialProps) {
@@ -216,16 +149,16 @@ export function CompassDial({
     <div
       role="img"
       aria-label={ariaLabel}
+      aria-hidden={!ariaLabel}
       className={cn(
         'relative flex h-60 w-60 items-center justify-center select-none sm:h-72 sm:w-72 md:h-80 md:w-80',
         className
       )}
     >
       <div
-        style={isAligned ? ALIGNED_RING_STYLE : undefined}
         className={cn(
           'glass-panel border-outline-variant/30 absolute inset-0 rounded-full border transition-all duration-500 ease-out',
-          isAligned && 'border-primary/70 bg-primary/[0.04]'
+          isAligned && 'border-primary/70 bg-primary/5 shadow-compass-glow scale-105'
         )}
       />
 

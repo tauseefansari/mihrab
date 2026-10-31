@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { QiblahCompassCard } from '@/features/qiblah/components/qiblah-compass-card';
+import { QiblahAudioService } from '@/features/qiblah/services/qiblah-audio.service';
 
-const ALIGN_TOWARDS_MAKKAH = 'alignTowards: sanctuaries.makkah';
-const ALIGN_TOWARDS_MADINAH = 'alignTowards: sanctuaries.madinah';
+const ALIGN_TOWARDS_MAKKAH = 'subtitle: sanctuaries.makkah';
+const ALIGN_TOWARDS_MADINAH = 'subtitle: sanctuaries.madinah';
 const ALIGNED = 'aligned';
 const DEVICE_ORIENTATION = 'deviceorientation';
-const MUMBAI = 'Mumbai';
+const MUMBAI = 'defaultCity';
 const ENABLE_COMPASS = 'enableCompass';
 const PERMISSION_DENIED_NOTICE = 'permissionDeniedNotice';
 
@@ -29,9 +30,7 @@ describe('QiblahCompassCard', () => {
 
     expect(screen.getByText('title')).toBeInTheDocument();
     expect(screen.getByText(ALIGN_TOWARDS_MAKKAH)).toBeInTheDocument();
-    expect(
-      screen.getByRole('img', { name: /compass dial pointing toward qiblah/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /compassDialAria/i })).toBeInTheDocument();
     expect(screen.getByText('angle')).toBeInTheDocument();
     expect(screen.getByText('distance')).toBeInTheDocument();
   });
@@ -44,7 +43,7 @@ describe('QiblahCompassCard', () => {
     expect(screen.getByText('3,452')).toBeInTheDocument();
     expect(screen.getByText('280°')).toBeInTheDocument();
 
-    const madinahBtn = screen.getByRole('button', { name: 'sanctuaries.madinah' });
+    const madinahBtn = screen.getByRole('radio', { name: 'sanctuaries.madinah' });
     fireEvent.click(madinahBtn);
 
     // Subtitle updates to Madinah and recalculates distance to Medina (3,478 km, 286°)
@@ -52,7 +51,7 @@ describe('QiblahCompassCard', () => {
     expect(screen.getByText('3,478')).toBeInTheDocument();
     expect(screen.getByText('286°')).toBeInTheDocument();
 
-    const makkahBtn = screen.getByRole('button', { name: 'sanctuaries.makkah' });
+    const makkahBtn = screen.getByRole('radio', { name: 'sanctuaries.makkah' });
     fireEvent.click(makkahBtn);
 
     // Subtitle updates back to Mecca
@@ -320,5 +319,74 @@ describe('QiblahCompassCard', () => {
 
     expect(screen.getByText('instruction')).toBeInTheDocument();
     expect(mockVibrate).not.toHaveBeenCalled();
+  });
+
+  it('toggles sound mode when sound button is clicked', () => {
+    render(<QiblahCompassCard />);
+
+    const soundButton = screen.getByRole('button', { name: 'soundOff' });
+    expect(soundButton).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(soundButton);
+    });
+    expect(screen.getByRole('button', { name: 'soundOn' })).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: 'soundOn' }));
+    });
+    expect(screen.getByRole('button', { name: 'soundOff' })).toBeInTheDocument();
+  });
+
+  it('plays alignment audio chime when sound is enabled and heading aligns', () => {
+    const playChimeSpy = vi
+      .spyOn(QiblahAudioService, 'playAlignmentChime')
+      .mockResolvedValue(undefined);
+
+    render(<QiblahCompassCard />);
+
+    // Enable sound
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: 'soundOff' }));
+    });
+
+    // Simulate device orientation aligning to 280
+    act(() => {
+      const event = new Event(DEVICE_ORIENTATION) as unknown as {
+        webkitCompassHeading: number;
+      };
+      event.webkitCompassHeading = 280;
+      window.dispatchEvent(event as unknown as Event);
+    });
+
+    expect(screen.getByText(ALIGNED)).toBeInTheDocument();
+    expect(playChimeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('toggles calibration guide banner when calibrate button is clicked and dismisses on done', async () => {
+    render(<QiblahCompassCard />);
+
+    const calibrateBtn = screen.getByRole('button', { name: 'calibrate' });
+    expect(calibrateBtn).toBeInTheDocument();
+
+    // Banner should not be visible initially
+    expect(screen.queryByText('calibrateTitle')).not.toBeInTheDocument();
+
+    // Click calibrate
+    act(() => {
+      fireEvent.click(calibrateBtn);
+    });
+    expect(await screen.findByText('calibrateTitle')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /calibrationIllustration/i })).toBeInTheDocument();
+
+    // Dismiss banner via done button
+    const doneButtons = screen.getAllByRole('button', { name: 'calibrationDone' });
+    expect(doneButtons[0]).toBeDefined();
+    act(() => {
+      fireEvent.click(doneButtons[0] as HTMLElement);
+    });
+
+    expect(await screen.findByRole('img', { name: /compassDialAria/i })).toBeInTheDocument();
+    expect(screen.queryByText('calibrateTitle')).not.toBeInTheDocument();
   });
 });

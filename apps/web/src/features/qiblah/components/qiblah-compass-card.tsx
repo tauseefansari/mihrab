@@ -9,6 +9,9 @@ import { Icon } from '@/components/ui/icon';
 import { CompassDial } from '@/components/ui/compass-dial';
 import { QiblahInfoCard } from '@/features/qiblah/components/qiblah-info-card';
 import { QiblahLocationPicker } from '@/features/qiblah/components/qiblah-location-picker';
+import { CompassCalibrationBanner } from '@/features/qiblah/components/compass-calibration-banner';
+import { AnimatedViewSwitcher } from '@/components/ui/animated-view-switcher';
+import { QiblahAudioService } from '@/features/qiblah/services/qiblah-audio.service';
 import { QiblahService } from '@/core/services/qiblah.service';
 import { isClient } from '@/shared/utils/is-client';
 import { cn } from '@/shared/utils/cn';
@@ -120,13 +123,17 @@ function useCompassOrientation() {
   return { heading, isPermissionDenied, needsPermission, requestPermission };
 }
 
-function useQiblahLocation() {
+function useQiblahLocation(defaultCityLabel: string) {
   const [selectedSanctuary, setSelectedSanctuary] = useState<SanctuaryId>('makkah');
   const [coords, setCoords] = useState<{
     latitude: number;
     longitude: number;
     cityName: string;
-  }>(DEFAULT_USER_LOCATION);
+  }>({
+    latitude: DEFAULT_USER_LOCATION.latitude,
+    longitude: DEFAULT_USER_LOCATION.longitude,
+    cityName: defaultCityLabel,
+  });
 
   useEffect(() => {
     if (!isClient() || !('geolocation' in navigator)) return;
@@ -140,9 +147,7 @@ function useQiblahLocation() {
         setCoords({
           latitude: lat,
           longitude: lng,
-          cityName: isNearMumbai
-            ? DEFAULT_USER_LOCATION.cityName
-            : `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`,
+          cityName: isNearMumbai ? defaultCityLabel : `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`,
         });
       },
       () => {
@@ -150,7 +155,7 @@ function useQiblahLocation() {
       },
       { timeout: 10000, maximumAge: 60000 }
     );
-  }, []);
+  }, [defaultCityLabel]);
 
   const selectSanctuary = (sanctuary: SanctuaryId) => {
     setSelectedSanctuary(sanctuary);
@@ -213,16 +218,19 @@ function CompassStatusText({
   );
 }
 
-function useHapticAlignment(isAligned: boolean) {
+function useAlignmentFeedback(isAligned: boolean, isSoundEnabled: boolean) {
   const prevAlignedRef = useRef(false);
   useEffect(() => {
     if (isAligned && !prevAlignedRef.current) {
       if ('vibrate' in navigator) {
         navigator.vibrate([35]);
       }
+      if (isSoundEnabled) {
+        void QiblahAudioService.playAlignmentChime();
+      }
     }
     prevAlignedRef.current = isAligned;
-  }, [isAligned]);
+  }, [isAligned, isSoundEnabled]);
 }
 
 function CompassDialSection({
@@ -230,11 +238,13 @@ function CompassDialSection({
   isAligned,
   labels,
   sanctuary,
+  ariaLabel,
 }: {
   needleAngle: number;
   isAligned: boolean;
   labels: { north: string; south: string; west: string; east: string };
   sanctuary: SanctuaryId;
+  ariaLabel: string;
 }) {
   return (
     <Box as="div" className="mb-md md:mb-lg flex items-center justify-center">
@@ -243,6 +253,7 @@ function CompassDialSection({
         isAligned={isAligned}
         labels={labels}
         sanctuary={sanctuary}
+        ariaLabel={ariaLabel}
       />
     </Box>
   );
@@ -279,7 +290,7 @@ function CompassPermissionSection({
         <Text
           as="p"
           variant="label-sm"
-          className="mt-xs max-w-80 text-center text-amber-500/90 dark:text-amber-400"
+          className="mt-xs text-tertiary max-w-80 text-center font-medium"
         >
           {permissionDeniedNotice}
         </Text>
@@ -288,31 +299,163 @@ function CompassPermissionSection({
   );
 }
 
-export function QiblahCompassCard() {
-  const t = useTranslations('Qiblah');
-  const { heading, isPermissionDenied, needsPermission, requestPermission } =
-    useCompassOrientation();
-  const { coords, selectSanctuary, selectedSanctuary } = useQiblahLocation();
+interface CompassActionToolbarProps {
+  isSoundEnabled: boolean;
+  isCalibrating: boolean;
+  onToggleSound: () => void;
+  onToggleCalibration: () => void;
+  soundLabel: string;
+  calibrateLabel: string;
+}
 
+function CompassActionToolbar({
+  isSoundEnabled,
+  isCalibrating,
+  onToggleSound,
+  onToggleCalibration,
+  soundLabel,
+  calibrateLabel,
+}: CompassActionToolbarProps) {
+  return (
+    <Box as="div" className="gap-sm mb-md flex items-center justify-center">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={onToggleSound}
+        aria-label={soundLabel}
+        className="gap-xs text-label-sm border-outline-variant/40 bg-surface-container/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-full border backdrop-blur-sm"
+      >
+        <Icon name={isSoundEnabled ? 'Volume2' : 'VolumeX'} size={15} />
+        <Text as="span" variant="label-sm">
+          {soundLabel}
+        </Text>
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={onToggleCalibration}
+        aria-label={calibrateLabel}
+        className="gap-xs text-label-sm border-outline-variant/40 bg-surface-container/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-full border backdrop-blur-sm"
+      >
+        <Icon name={isCalibrating ? 'Compass' : 'RotateCw'} size={15} />
+        <Text as="span" variant="label-sm">
+          {calibrateLabel}
+        </Text>
+      </Button>
+    </Box>
+  );
+}
+
+function useQiblahCalculation(
+  heading: number,
+  coords: { latitude: number; longitude: number },
+  selectedSanctuary: SanctuaryId
+) {
   const targetCoords = SANCTUARY_TARGETS[selectedSanctuary];
-
-  const sanctuaryLabel = t(`sanctuaries.${selectedSanctuary}`);
-  const subtitle = t('alignTowards', { sanctuary: sanctuaryLabel });
-
   const { bearing, distanceKm, cardinal } = QiblahService.calculateQiblah(
     coords.latitude,
     coords.longitude,
     targetCoords
   );
-
   const { relativeAngle, isAligned } = QiblahService.calculateAlignment(heading, bearing);
-  useHapticAlignment(isAligned);
+  return { bearing, distanceKm, cardinal, relativeAngle, isAligned };
+}
+
+interface CompassNavigationSectionProps {
+  needleAngle: number;
+  isAligned: boolean;
+  selectedSanctuary: SanctuaryId;
+  labels: { north: string; south: string; west: string; east: string };
+  compassDialAria: string;
+  needsPermission: boolean;
+  isPermissionDenied: boolean;
+  onRequestPermission: () => void;
+  enableCompassLabel: string;
+  permissionDeniedNotice: string;
+}
+
+function CompassNavigationSection({
+  needleAngle,
+  isAligned,
+  selectedSanctuary,
+  labels,
+  compassDialAria,
+  needsPermission,
+  isPermissionDenied,
+  onRequestPermission,
+  enableCompassLabel,
+  permissionDeniedNotice,
+}: CompassNavigationSectionProps) {
+  return (
+    <>
+      <CompassDialSection
+        needleAngle={needleAngle}
+        isAligned={isAligned}
+        sanctuary={selectedSanctuary}
+        labels={labels}
+        ariaLabel={compassDialAria}
+      />
+      <CompassPermissionSection
+        needsPermission={needsPermission}
+        isPermissionDenied={isPermissionDenied}
+        onRequestPermission={onRequestPermission}
+        enableCompassLabel={enableCompassLabel}
+        permissionDeniedNotice={permissionDeniedNotice}
+      />
+    </>
+  );
+}
+
+interface CompassHeroViewProps {
+  isCalibrating: boolean;
+  onDismissCalibration: () => void;
+  navigationProps: CompassNavigationSectionProps;
+}
+
+function CompassHeroView({
+  isCalibrating,
+  onDismissCalibration,
+  navigationProps,
+}: CompassHeroViewProps) {
+  return (
+    <AnimatedViewSwitcher
+      activeKey={isCalibrating ? 'calibrate' : 'compass'}
+      className="mb-md min-h-72"
+    >
+      {isCalibrating ? (
+        <CompassCalibrationBanner onDismiss={onDismissCalibration} className="w-full" />
+      ) : (
+        <CompassNavigationSection {...navigationProps} />
+      )}
+    </AnimatedViewSwitcher>
+  );
+}
+
+export function QiblahCompassCard() {
+  const t = useTranslations('Qiblah');
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const [isCalibrating, setIsCalibrating] = useState(false);
+
+  const { heading, isPermissionDenied, needsPermission, requestPermission } =
+    useCompassOrientation();
+  const defaultCityLabel = t(DEFAULT_USER_LOCATION.cityKey);
+  const { coords, selectSanctuary, selectedSanctuary } = useQiblahLocation(defaultCityLabel);
+
+  const sanctuaryLabel = t(`sanctuaries.${selectedSanctuary}`);
+  const subtitle = t('subtitle', { sanctuary: sanctuaryLabel });
+
+  const { bearing, distanceKm, cardinal, relativeAngle, isAligned } = useQiblahCalculation(
+    heading,
+    coords,
+    selectedSanctuary
+  );
+  useAlignmentFeedback(isAligned, isSoundEnabled);
 
   return (
     <Box as="div" className="relative z-10 flex w-full flex-col items-center justify-center">
       <CompassHeader title={t('title')} subtitle={subtitle} />
 
-      {/* Sanctuary Switcher at top for immediate zero-scroll access */}
       <QiblahLocationPicker
         currentCity={coords.cityName}
         latitude={coords.latitude}
@@ -322,25 +465,35 @@ export function QiblahCompassCard() {
         className="mb-md"
       />
 
-      <CompassDialSection
-        needleAngle={relativeAngle}
-        isAligned={isAligned}
-        sanctuary={selectedSanctuary}
-        labels={{
-          north: t('cardinal.N'),
-          south: t('cardinal.S'),
-          west: t('cardinal.W'),
-          east: t('cardinal.E'),
+      <CompassHeroView
+        isCalibrating={isCalibrating}
+        onDismissCalibration={() => setIsCalibrating(false)}
+        navigationProps={{
+          needleAngle: relativeAngle,
+          isAligned,
+          selectedSanctuary,
+          labels: {
+            north: t('cardinal.N'),
+            south: t('cardinal.S'),
+            west: t('cardinal.W'),
+            east: t('cardinal.E'),
+          },
+          compassDialAria: t('compassDialAria', { sanctuary: sanctuaryLabel }),
+          needsPermission,
+          isPermissionDenied,
+          onRequestPermission: requestPermission,
+          enableCompassLabel: t('enableCompass'),
+          permissionDeniedNotice: t('permissionDeniedNotice'),
         }}
       />
 
-      {/* Re-trigger permission button when compass sensor permission is needed/not allowed */}
-      <CompassPermissionSection
-        needsPermission={needsPermission}
-        isPermissionDenied={isPermissionDenied}
-        onRequestPermission={requestPermission}
-        enableCompassLabel={t('enableCompass')}
-        permissionDeniedNotice={t('permissionDeniedNotice')}
+      <CompassActionToolbar
+        isSoundEnabled={isSoundEnabled}
+        isCalibrating={isCalibrating}
+        onToggleSound={() => setIsSoundEnabled((prev) => !prev)}
+        onToggleCalibration={() => setIsCalibrating((prev) => !prev)}
+        soundLabel={isSoundEnabled ? t('soundOn') : t('soundOff')}
+        calibrateLabel={isCalibrating ? t('compass') : t('calibrate')}
       />
 
       <QiblahInfoCard

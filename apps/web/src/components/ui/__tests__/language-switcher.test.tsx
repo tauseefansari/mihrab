@@ -71,7 +71,7 @@ describe('LanguageSwitcher component', () => {
     expect(mockSetCookieAction).not.toHaveBeenCalled();
   });
 
-  it('closes dropdown when clicking outside', () => {
+  it('closes dropdown when clicking outside', async () => {
     render(
       <div>
         <div data-testid="outside">Outside Area</div>
@@ -84,6 +84,8 @@ describe('LanguageSwitcher component', () => {
     expect(screen.getByRole('listbox')).toBeInTheDocument();
 
     fireEvent.mouseDown(screen.getByTestId('outside'));
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
   });
 });

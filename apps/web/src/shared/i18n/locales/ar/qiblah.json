@@ -1,7 +1,6 @@
 {
   "title": "القبلة",
   "subtitle": "وجّه جهازك نحو {sanctuary}",
-  "alignTowards": "وجّه جهازك نحو {sanctuary}",
   "angle": "الزاوية",
   "distance": "المسافة",
   "km": "كم",
@@ -9,11 +8,21 @@
   "aligned": "تمت المحاذاة مع القبلة",
   "enableCompass": "تفعيل البوصلة",
   "permissionDeniedNotice": "تم حظر إذن مستشعر الحركة من قبل المتصفح. يرجى تفعيل إذن الحركة في إعدادات الموقع لاستخدام البوصلة المباشرة.",
+  "calibrate": "معايرة",
+  "compass": "البوصلة",
+  "calibrateTitle": "معايرة البوصلة",
+  "calibrateInstruction": "قم بتحريك جهازك على شكل رقم 8 لمعايرة الحساسات.",
+  "calibrationDone": "تم",
+  "calibrationIllustration": "رسم توضيحي لحركة المعايرة بشكل الرقم 8",
+  "soundOn": "تشغيل الصوت",
+  "soundOff": "كتم الصوت",
+  "selectSanctuary": "اختر الوجهة",
+  "defaultCity": "مومباي",
+  "compassDialAria": "بوصلة تشير إلى {sanctuary}",
   "sanctuaries": {
     "makkah": "مكة المكرمة",
     "madinah": "المدينة المنورة"
   },
-  "location": "الموقع",
   "cardinal": {
     "N": "ش",
     "NE": "ش.ق",

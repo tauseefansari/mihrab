@@ -1,7 +1,6 @@
 {
   "title": "Qiblah",
   "subtitle": "Align yourself towards {sanctuary}",
-  "alignTowards": "Align yourself towards {sanctuary}",
   "angle": "Angle",
   "distance": "Distance",
   "km": "km",
@@ -9,11 +8,21 @@
   "aligned": "Aligned with Qiblah",
   "enableCompass": "Enable Compass",
   "permissionDeniedNotice": "Sensor permission is blocked by your browser. Please allow motion access in site settings to use the live compass.",
+  "calibrate": "Calibrate",
+  "compass": "Compass",
+  "calibrateTitle": "Calibrate Compass",
+  "calibrateInstruction": "Wave your device in a figure-8 motion to calibrate motion sensors.",
+  "calibrationDone": "Done",
+  "calibrationIllustration": "Figure-8 calibration motion illustration",
+  "soundOn": "Sound on",
+  "soundOff": "Sound off",
+  "selectSanctuary": "Select sanctuary",
+  "defaultCity": "Mumbai",
+  "compassDialAria": "Compass dial pointing toward {sanctuary}",
   "sanctuaries": {
     "makkah": "Makkah",
     "madinah": "Madinah"
   },
-  "location": "Location",
   "cardinal": {
     "N": "N",
     "NE": "NE",

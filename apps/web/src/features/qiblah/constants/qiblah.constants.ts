@@ -20,5 +20,5 @@ export const SANCTUARY_TARGETS: Record<SanctuaryId, Coordinates> = {
 export const DEFAULT_USER_LOCATION = {
   latitude: 19.076,
   longitude: 72.8777,
-  cityName: 'Mumbai',
+  cityKey: 'defaultCity',
 } as const;

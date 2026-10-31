@@ -23,7 +23,7 @@ export function TopBar() {
           size="icon"
           aria-label={t('menu')}
           onClick={open}
-          className="text-on-surface-variant hover:bg-primary/10 rounded-full transition-transform active:scale-95 md:hidden"
+          className="text-on-surface-variant hover:text-on-surface hover:bg-primary/10 focus-visible:ring-primary focus-visible:ring-offset-surface rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95 md:hidden"
         >
           <Icon name="Menu" size={24} />
         </Button>
@@ -44,7 +44,7 @@ export function TopBar() {
             variant="ghost"
             size="icon"
             aria-label={t('account')}
-            className="bg-surface-container text-on-surface hover:bg-surface-container-high rounded-full transition-colors"
+            className="bg-surface-container dark:bg-surface-container-low text-on-surface hover:text-primary hover:bg-surface-container-high dark:hover:bg-surface-container-highest focus-visible:ring-primary focus-visible:ring-offset-surface rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Icon name="User" size={20} />
           </Button>

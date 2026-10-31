@@ -21,7 +21,7 @@ describe('qiblah.constants', () => {
   });
 
   it('defines fallback default user location', () => {
-    expect(DEFAULT_USER_LOCATION.cityName).toBe('Mumbai');
+    expect(DEFAULT_USER_LOCATION.cityKey).toBe('defaultCity');
     expect(DEFAULT_USER_LOCATION.latitude).toBeCloseTo(19.076, 3);
     expect(DEFAULT_USER_LOCATION.longitude).toBeCloseTo(72.8777, 4);
   });

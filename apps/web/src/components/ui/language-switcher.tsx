@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 import { setCookieAction } from '@/app/actions/cookie.action';
 import {
   LANGUAGE_OPTIONS,
@@ -27,10 +28,10 @@ function LanguageOptionItem({ opt, isSelected, label, onSelect }: LanguageOption
       type="button"
       onClick={() => onSelect(opt)}
       className={cn(
-        'gap-xs flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-xs transition-colors',
+        'gap-xs focus-visible:ring-primary flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none',
         isSelected
           ? 'bg-primary/10 text-primary font-semibold'
-          : 'text-on-surface hover:bg-surface-container-high'
+          : 'text-on-surface hover:text-primary hover:bg-surface-container-high dark:hover:bg-surface-container-highest dark:hover:text-primary'
       )}
     >
       <div className="gap-xs flex items-center">
@@ -38,7 +39,7 @@ function LanguageOptionItem({ opt, isSelected, label, onSelect }: LanguageOption
           className={cn(
             'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs leading-none font-bold',
             isSelected
-              ? 'bg-primary text-white dark:text-white'
+              ? 'bg-primary text-on-primary'
               : 'bg-surface-container-high text-primary border-outline-variant/30 border'
           )}
         >
@@ -90,8 +91,8 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={t('selectLanguage')}
-        className="bg-surface-container border-outline-variant/30 text-on-surface hover:bg-surface-container-high focus:border-primary flex h-9 items-center gap-2 rounded-full border px-3 text-xs font-medium transition-colors focus:outline-none"
+        aria-label={`${currentOption.nativeLabel}, ${t('selectLanguage')}`}
+        className="bg-surface-container dark:bg-surface-container-low border-outline-variant/30 text-on-surface hover:text-primary hover:bg-surface-container-high dark:hover:bg-surface-container-highest dark:hover:border-primary/40 focus-visible:ring-primary focus-visible:ring-offset-surface flex h-9 items-center gap-2 rounded-full border px-3 text-xs font-medium transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <Icon name="Languages" size={16} className="text-primary shrink-0" />
         <span className="truncate">{currentOption.nativeLabel}</span>
@@ -105,23 +106,29 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         />
       </button>
 
-      {isOpen && (
-        <div
-          role="listbox"
-          aria-label={t('selectLanguage')}
-          className="glass-panel border-outline-variant/30 bg-surface-container-lowest absolute start-0 bottom-full z-50 mb-1 min-w-44 rounded-xl border p-1 shadow-xl backdrop-blur-xl"
-        >
-          {LANGUAGE_OPTIONS.map((opt) => (
-            <LanguageOptionItem
-              key={opt.code}
-              opt={opt}
-              isSelected={opt.code === locale}
-              label={t(opt.labelKey)}
-              onSelect={handleLanguageChange}
-            />
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -4 }}
+            transition={{ duration: 0.15 }}
+            role="listbox"
+            aria-label={t('selectLanguage')}
+            className="glass-panel border-outline-variant/30 bg-surface-container-lowest absolute start-0 bottom-full z-50 mb-1 min-w-44 rounded-xl border p-1 shadow-xl backdrop-blur-xl"
+          >
+            {LANGUAGE_OPTIONS.map((opt) => (
+              <LanguageOptionItem
+                key={opt.code}
+                opt={opt}
+                isSelected={opt.code === locale}
+                label={t(opt.labelKey)}
+                onSelect={handleLanguageChange}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

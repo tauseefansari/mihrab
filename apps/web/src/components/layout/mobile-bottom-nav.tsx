@@ -21,7 +21,7 @@ function MobileNavItem({ href, icon, label, isActive }: MobileNavItemProps) {
       href={href}
       aria-current={isActive ? 'page' : undefined}
       className={cn(
-        'group relative flex flex-1 flex-col items-center justify-center py-1 transition-all duration-300 ease-out active:scale-90',
+        'group focus-visible:ring-primary focus-visible:ring-offset-surface relative flex flex-1 flex-col items-center justify-center rounded-xl py-1 transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-90',
         isActive ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-primary'
       )}
     >
@@ -31,7 +31,7 @@ function MobileNavItem({ href, icon, label, isActive }: MobileNavItemProps) {
           'flex items-center justify-center rounded-full px-3.5 py-1 transition-all duration-300 ease-out',
           isActive
             ? 'bg-primary/15 text-primary scale-110 shadow-sm'
-            : 'group-hover:bg-surface-container-high group-hover:scale-105'
+            : 'group-hover:bg-surface-container-high dark:group-hover:bg-surface-container-highest group-hover:scale-105'
         )}
       >
         <Icon
@@ -71,6 +71,7 @@ export function MobileBottomNav() {
   return (
     <Box
       as="nav"
+      aria-label={t('navigationMenu')}
       className="border-outline-variant/30 bg-surface/90 dark:bg-surface/95 fixed inset-x-0 bottom-0 z-40 flex h-16 w-full items-center justify-around border-t shadow-lg backdrop-blur-xl md:hidden"
     >
       <MobileNavItem href="/" icon="House" label={t('home')} isActive={isLinkActive('/')} />

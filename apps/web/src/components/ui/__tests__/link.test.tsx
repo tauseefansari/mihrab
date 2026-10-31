@@ -15,4 +15,15 @@ describe('Link component', () => {
     const link = screen.getByRole('link', { name: 'External' });
     expect(link).toHaveClass('hover:underline');
   });
+
+  it('preserves custom text color without injecting default text-primary', () => {
+    render(
+      <Link href="/test" className="text-on-primary">
+        Custom
+      </Link>
+    );
+    const link = screen.getByRole('link', { name: 'Custom' });
+    expect(link).toHaveClass('text-on-primary');
+    expect(link).not.toHaveClass('text-primary');
+  });
 });

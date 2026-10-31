@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ThemeSwitcher } from '@/components/ui/theme-switcher';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useMobileDrawer } from '@/components/layout/use-mobile-drawer';
+import { handleArrowNavigation } from '@/shared/utils/keyboard-nav';
 import { cn } from '@/shared/utils/cn';
 
 interface DrawerNavItemProps {
@@ -29,10 +30,10 @@ function DrawerNavItem({ href, icon, label, isActive, onClick }: DrawerNavItemPr
       onClick={onClick}
       {...currentAttr}
       className={cn(
-        'group gap-md px-md py-sm flex items-center rounded-xl transition-all duration-200',
+        'group gap-md px-md py-sm focus-visible:ring-primary focus-visible:ring-offset-surface flex items-center rounded-xl transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
         isActive
-          ? 'border-primary bg-primary/10 text-primary border-s-4 font-bold'
-          : 'text-on-surface-variant hover:bg-surface-container-high'
+          ? 'border-primary bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-primary/20 border-s-4 font-bold'
+          : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest'
       )}
     >
       <Box as="div" className="transition-transform group-hover:scale-110">
@@ -67,7 +68,7 @@ function DrawerHeader({
         size="icon"
         aria-label={closeLabel}
         onClick={onClose}
-        className="text-on-surface-variant hover:bg-surface-container-high rounded-full"
+        className="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest focus-visible:ring-primary focus-visible:ring-offset-surface rounded-full focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <Icon name="X" size={20} />
       </Button>
@@ -114,6 +115,7 @@ interface DrawerNavListProps {
   qiblahLabel: string;
   zakatLabel: string;
   settingsLabel: string;
+  navLabel: string;
 }
 
 function DrawerNavList({
@@ -127,9 +129,15 @@ function DrawerNavList({
   qiblahLabel,
   zakatLabel,
   settingsLabel,
+  navLabel,
 }: DrawerNavListProps) {
   return (
-    <Box as="nav" className="p-sm gap-xs flex flex-1 flex-col overflow-y-auto">
+    <Box
+      as="nav"
+      aria-label={navLabel}
+      onKeyDown={handleArrowNavigation}
+      className="p-sm gap-xs flex flex-1 flex-col overflow-y-auto"
+    >
       <DrawerNavItem
         href="/"
         icon="House"
@@ -245,6 +253,7 @@ export function MobileSidebarDrawer() {
           qiblahLabel={t('qiblah')}
           zakatLabel={t('zakat')}
           settingsLabel={t('settings')}
+          navLabel={t('drawerNavigation')}
         />
 
         <DrawerFooter />

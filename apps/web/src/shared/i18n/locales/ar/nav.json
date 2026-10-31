@@ -12,5 +12,6 @@
   "menu": "القائمة",
   "account": "الحساب",
   "close": "إغلاق",
-  "navigationMenu": "قائمة التنقل"
+  "navigationMenu": "قائمة التنقل",
+  "drawerNavigation": "قائمة التنقل الجانبية"
 }
