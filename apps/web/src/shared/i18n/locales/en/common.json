@@ -6,10 +6,17 @@
   "Error": {
     "title": "Something went wrong!",
     "description": "An unexpected error occurred in this section of the application.",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "backToHome": "Back to Home"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backToHome": "Back to Home"
   },
   "UI": {
     "selectOption": "Select an option",
+    "loading": "Loading...",
     "toggleTheme": "Toggle theme",
     "selectLanguage": "Select language",
     "languages": {
@@ -22,7 +29,8 @@
   "FatalError": {
     "title": "Fatal Application Error",
     "description": "The application encountered an unrecoverable error.",
-    "tryAgain": "Try to recover"
+    "tryAgain": "Try to recover",
+    "backToHome": "Back to Home"
   },
   "Tooltip": {
     "help": "Help information",

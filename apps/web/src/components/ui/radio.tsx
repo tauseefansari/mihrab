@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type InputHTMLAttributes, type ChangeEvent, type Ref } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/utils/cn';
 
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -51,13 +52,23 @@ export function Radio({
       />
       <div
         className={cn(
-          'flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+          'flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-150',
           isChecked
             ? 'border-primary'
             : 'border-outline peer-hover:border-primary-container peer-focus:border-primary'
         )}
       >
-        {isChecked && <div className="bg-primary size-2.5 rounded-full" />}
+        <AnimatePresence initial={false}>
+          {isChecked && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              className="bg-primary size-2.5 rounded-full"
+            />
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

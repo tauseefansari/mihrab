@@ -8,8 +8,10 @@
   "zakat": "ज़कात",
   "settings": "सेटिंग्स",
   "brandName": "अल-मेहराब",
-  "notifications": "सूचनाएं",
   "profile": "प्रोफ़ाइल",
   "menu": "मेनू",
-  "account": "खाता"
+  "account": "खाता",
+  "close": "बंद करें",
+  "navigationMenu": "नेविगेशन मेनू",
+  "drawerNavigation": "साइडबार मेनू"
 }

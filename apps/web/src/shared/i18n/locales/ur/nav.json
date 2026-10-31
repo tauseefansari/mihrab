@@ -8,8 +8,10 @@
   "zakat": "زکوٰۃ",
   "settings": "ترتیبات",
   "brandName": "المحراب",
-  "notifications": "اطلاعات",
   "profile": "پروفائل",
   "menu": "مینو",
-  "account": "اکاؤنٹ"
+  "account": "اکاؤنٹ",
+  "close": "بند کریں",
+  "navigationMenu": "نیویگیشن مینو",
+  "drawerNavigation": "سائیڈبار مینو"
 }

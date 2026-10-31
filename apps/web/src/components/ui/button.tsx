@@ -19,10 +19,12 @@ export function Button({
   ...props
 }: ButtonProps) {
   const variants = {
-    primary: 'bg-primary text-on-primary hover:bg-primary-container',
-    secondary: 'bg-secondary text-on-secondary hover:bg-secondary-container',
+    primary:
+      'bg-primary text-on-primary hover:bg-primary-container dark:hover:bg-primary/90 hover:shadow-md',
+    secondary:
+      'bg-secondary text-on-secondary hover:bg-secondary/85 dark:hover:bg-secondary/90 hover:shadow-sm',
     ghost:
-      'bg-transparent text-primary hover:bg-surface-dim border border-outline/20 hover:border-outline/40',
+      'bg-transparent text-primary hover:bg-primary/10 dark:hover:bg-primary/15 border border-outline-variant/30 hover:border-primary/40 dark:hover:border-primary/50',
   };
 
   const sizes = {
@@ -38,7 +40,7 @@ export function Button({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={cn(
-        'focus-visible:ring-primary inline-flex cursor-pointer items-center justify-center transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed',
+        'focus-visible:ring-primary focus-visible:ring-offset-surface inline-flex cursor-pointer items-center justify-center transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
         variants[variant],
         sizes[size],
         className

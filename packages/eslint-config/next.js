@@ -56,6 +56,40 @@ export const nextConfig = [
           message:
             'Explicit Component.displayName assignment is unnecessary for standard function components in React 19.',
         },
+        {
+          selector: 'Literal[value=/(?:^|\\s)(?:pl-|pr-|ml-|mr-|text-left|text-right)(?:\\S*)/]',
+          message:
+            'Physical directional utility classes (pl-, pr-, ml-, mr-, text-left, text-right) are forbidden. Exclusively use logical properties (ps-, pe-, ms-, me-, text-start, text-end).',
+        },
+        {
+          selector:
+            'TemplateElement[value.raw=/(?:^|\\s)(?:pl-|pr-|ml-|mr-|text-left|text-right)(?:\\S*)/]',
+          message:
+            'Physical directional utility classes (pl-, pr-, ml-, mr-, text-left, text-right) are forbidden. Exclusively use logical properties (ps-, pe-, ms-, me-, text-start, text-end).',
+        },
+        {
+          selector:
+            'Literal[value=/(?:^|\\s)(?:bg|text|border|ring|fill|stroke)-(?:red|blue|green|amber|yellow|emerald|teal|cyan|sky|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|neutral|stone)-/]',
+          message:
+            'Raw Tailwind palette colors are forbidden. You must strictly use design system tokens (primary, surface, on-surface, secondary, tertiary, error, outline, etc.).',
+        },
+        {
+          selector:
+            'TemplateElement[value.raw=/(?:^|\\s)(?:bg|text|border|ring|fill|stroke)-(?:red|blue|green|amber|yellow|emerald|teal|cyan|sky|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|neutral|stone)-/]',
+          message:
+            'Raw Tailwind palette colors are forbidden. You must strictly use design system tokens (primary, surface, on-surface, secondary, tertiary, error, outline, etc.).',
+        },
+        {
+          selector:
+            'JSXAttribute[name.name="style"] Property[key.name=/^(color|backgroundColor|background|boxShadow|textShadow|borderColor|fill|stroke|fontSize|fontFamily)/]',
+          message:
+            'Inline styles for colors, backgrounds, shadows, and typography are forbidden. Use design system tokens and Tailwind utility classes instead.',
+        },
+        {
+          selector: 'JSXAttribute[name.name="style"] Literal[value=/(?:#|rgb|hsl|rgba|hsla)/]',
+          message:
+            'Hardcoded color values (hex, rgb, hsl) in inline styles are forbidden. Use design system tokens instead.',
+        },
       ],
     },
   },

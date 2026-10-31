@@ -17,4 +17,8 @@ describe('cn utility', () => {
   it('handles arrays and nested objects', () => {
     expect(cn(['flex', { 'items-center': true, hidden: false }])).toBe('flex items-center');
   });
+
+  it('preserves both design text color and font size tokens without conflict', () => {
+    expect(cn('text-on-primary', 'text-label-sm')).toBe('text-on-primary text-label-sm');
+  });
 });
