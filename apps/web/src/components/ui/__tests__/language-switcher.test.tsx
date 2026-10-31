@@ -88,4 +88,63 @@ describe('LanguageSwitcher component', () => {
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
   });
+
+  it('opens on ArrowDown key and navigates options with arrows, Home, End, and closes on Escape', async () => {
+    render(<LanguageSwitcher />);
+
+    const trigger = screen.getByRole('button', { name: /select language/i });
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+
+    const listbox = screen.getByRole('listbox');
+    expect(listbox).toBeInTheDocument();
+
+    const options = screen.getAllByRole('option');
+    expect(options).toHaveLength(4);
+
+    // Initial focus on the selected locale (English)
+    expect(document.activeElement).toBe(options[0]);
+
+    // ArrowDown moves to next option (Arabic)
+    fireEvent.keyDown(listbox, { key: 'ArrowDown' });
+    expect(document.activeElement).toBe(options[1]);
+
+    // End moves to last option (Hindi)
+    fireEvent.keyDown(listbox, { key: 'End' });
+    expect(document.activeElement).toBe(options[3]);
+
+    // Home moves to first option (English)
+    fireEvent.keyDown(listbox, { key: 'Home' });
+    expect(document.activeElement).toBe(options[0]);
+
+    // ArrowUp wraps to last option (Hindi)
+    fireEvent.keyDown(listbox, { key: 'ArrowUp' });
+    expect(document.activeElement).toBe(options[3]);
+
+    // Escape closes dropdown and restores focus to trigger
+    fireEvent.keyDown(listbox, { key: 'Escape' });
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('closes dropdown on Tab key and supports Escape on trigger', async () => {
+    render(<LanguageSwitcher />);
+
+    const trigger = screen.getByRole('button', { name: /select language/i });
+    fireEvent.keyDown(trigger, { key: 'Enter' });
+    const listbox = screen.getByRole('listbox');
+
+    fireEvent.keyDown(listbox, { key: 'Tab' });
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
+    fireEvent.click(trigger);
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+    fireEvent.keyDown(trigger, { key: 'Escape' });
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+  });
 });
