@@ -35,7 +35,7 @@ export default function ErrorBoundary({
           as="div"
           className="bg-error/10 text-error p-md rounded-full transition-transform hover:scale-105"
         >
-          <Icon name="TriangleAlert" size={48} />
+          <Icon name="TriangleExclamationPoint" size={48} />
         </Box>
 
         <Box as="div" className="space-y-xs">
