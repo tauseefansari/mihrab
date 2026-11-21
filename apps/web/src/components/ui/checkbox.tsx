@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type InputHTMLAttributes, type ChangeEvent, type Ref } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/utils/cn';
 import { Icon } from '@/components/ui/icon';
 
@@ -50,13 +51,24 @@ export function Checkbox({
       />
       <div
         className={cn(
-          'flex size-5 shrink-0 items-center justify-center rounded-sm border-2 transition-colors',
+          'flex size-5 shrink-0 items-center justify-center rounded-sm border-2 transition-colors duration-150',
           isChecked
             ? 'border-primary bg-primary text-on-primary'
             : 'border-outline peer-hover:border-primary-container peer-focus:border-primary bg-transparent'
         )}
       >
-        {isChecked && <Icon name="Check" size={14} strokeWidth={3} />}
+        <AnimatePresence initial={false}>
+          {isChecked && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            >
+              <Icon name="Check" size={14} strokeWidth={3} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

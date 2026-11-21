@@ -28,6 +28,8 @@ These rules apply to any autonomous AI agent interacting with this repository.
 - **Zero Exclusions:** ZERO source files may be excluded from test coverage. All app source files must be tested.
 - **Co-location:** Tests must be located in `__tests__` directories immediately adjacent to the file being tested (1 test file per source file, e.g. `foo.ts` -> `__tests__/foo.test.ts`).
 - **E2E:** Playwright E2E tests go in the `/e2e/` folder at the project root.
+- **E2E Feature Scope:** Exactly ONE test file per feature in `/e2e/<feature>.spec.ts` (e.g. `e2e/qiblah.spec.ts`, `e2e/shell.spec.ts`, `e2e/dashboard.spec.ts`). Do NOT fragment feature tests into multiple spec files.
+- **Full-Page Snapshots Only:** Use necessary full-page snapshots (`fullPage: true`) to comprehensively capture multiple states (desktop, mobile, drawer open, permission states, alignment states) without creating redundant element-level snapshots.
 
 ## Error Handling & Caching
 
@@ -45,7 +47,21 @@ These rules apply to any autonomous AI agent interacting with this repository.
 - **No data-testid in Production:** `data-testid` attributes are STRICTLY FORBIDDEN in production code. They are only permitted in test files (`*.test.tsx`).
 - **Native React 19 Activity:** Import `Activity` directly from `'react'` (`import { Activity } from 'react'`). Never wrap in custom components.
 - **Single Component Export:** Exactly ONE exported component per file matching the kebab-case filename. Private helper components are allowed inside the file ONLY if they are unexported and used exclusively within that file.
-- **Translations & Text:** Hardcoded text is FORBIDDEN in components. All text MUST use `next-intl` translations (`useTranslations` or `getTranslations`).
-- **Server-Side Rendering:** Data fetching MUST occur on the server (Server Components or Server Actions). Client-side data fetching (e.g., `fetch` or `axios` in `"use client"` components) is FORBIDDEN.
-- **Framer Motion:** Framer Motion requires `"use client"`. Animations MUST be isolated to UI components in `src/components/ui/`, keeping features and pages as Server Components.
-- **Zero AI Attribution:** Git commits must strictly follow Conventional Commits with Gitmojis and NEVER include `Co-authored-by: Cursor`, `Claude`, or any AI attribution trailers.
+- **Zero Hardcoded Text (Strictly Enforced):** Hardcoded user-facing text, fallback strings, default prop values containing human-readable text (e.g., `ariaLabel = '...'`, `label = '...'`, `cityName: '...'`), or untranslated UI strings are STRICTLY FORBIDDEN anywhere in the codebase. All strings MUST be localized through `next-intl` translation keys (`useTranslations` or `getTranslations`) and maintained synchronously across all supported locales (`en`, `ar`, `ur`, `hi`).
+- **Focus Outlines & Keyboard Navigation:** Keyboard accessibility must be guaranteed for all interactive elements. Every interactive control must have high-visibility focus indicators using `focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none`. Never disable browser focus outlines without providing an accessible `focus-visible` replacement.
+- **Dark Mode Hover & Interactive Consistency:** In dark mode, hover states must never reduce contrast or invert active primary themes. Active navigation items must maintain their primary accent styling on hover (e.g. `hover:bg-primary/20 hover:text-primary`). Inactive navigation items must visibly elevate on hover with clear text brightening (`hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest`). Buttons must maintain WCAG AA contrast on hover in both themes (never dark-on-dark).
+- **Error & Not Found Pages:** Error (`error.tsx`, `global-error.tsx`) and Not Found (`not-found.tsx`) pages must follow the glassmorphic design system (`GlassCard`), provide localized messaging, and feature accessible navigation buttons linking back to the Home page (`/`).
+- **Full-Width Canvas:** Main layout and page wrappers must occupy the full viewport width (`w-full`) without artificial max-width constraints (e.g., `max-w-screen-2xl`, `max-w-4xl`). Ensure responsive, fluid layouts across all screen sizes.
+- **Minimal Domain Constants & Constant Purity:** Never hardcode domain values, presets, or coordinates in components or services. Keep minimal, feature-scoped constants files (`src/features/<feature>/constants/<feature>.constants.ts`). Constant files must STRICTLY contain constants only (primitives, readonly arrays, frozen objects). NEVER place functions, calculations, or methods in constants files; place functions in dedicated utility files (`utils/*.ts` or `shared/utils/*.ts`). Do NOT create unnecessary constant files.
+- **Client Checking Helper:** NEVER write ad-hoc `typeof window === 'undefined'` or `typeof window !== 'undefined'` checks. ALWAYS use the shared `isClient()` helper from `@/shared/utils/is-client`.
+- **Default Permission Ergonomics:** Features requiring browser permissions (geolocation, device orientation) must automatically initialize on mount when allowed, avoiding redundant manual "enable" or "detect" buttons in the UI. Fall back gracefully without breaking layouts.
+- **High-Contrast Text:** Interactive controls (buttons, chips, pills) must guarantee high-contrast, crystal-clear text across both light and dark themes (never dark or black text on green/colored surfaces).
+- **Code Hygiene & Dead Code:** Unnecessary files, dead code, unused constants, orphaned translation keys, and unreferenced imports are STRICTLY FORBIDDEN. Regularly prune all unused artifacts across all locale files, components, and constant files.
+
+## Browser & Visual Verification (Mandatory on Every Turn)
+
+- **Zero Console Errors:** Every page navigation, client transition, and component interaction in the browser MUST produce 0 console errors and 0 unhandled promise rejections.
+- **Visual & Color Consistency:** Verify that all pages maintain a consistent theme background (`bg-background`, `text-on-background`, `bg-surface`) across ALL routes in BOTH light and dark modes. No route may have mismatched backgrounds or inverted theme tokens.
+- **Accessibility & Contrast:** Color contrast must satisfy WCAG AA (minimum 4.5:1 for normal text, 3:1 for large text) across all themes. All interactive elements must have clear focus and active indicators.
+- **Interactive & Hover States:** Every button, card, link, and input must be verified for hover, focus, active, and disabled states. Navigation components (DesktopSidebar, MobileBottomNav) must dynamically highlight the active route using `usePathname()`.
+- **Responsive Viewports:** Every UI change must be verified and screenshotted across Desktop (1280x800), Tablet (768x1024), and Mobile (390x844).

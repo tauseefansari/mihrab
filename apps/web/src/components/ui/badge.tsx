@@ -16,7 +16,7 @@ export function Badge({ className, variant = 'default', ...props }: BadgeProps) 
   return (
     <div
       className={cn(
-        'focus:ring-primary inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none',
+        'focus:ring-primary inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:outline-none',
         variants[variant],
         className
       )}

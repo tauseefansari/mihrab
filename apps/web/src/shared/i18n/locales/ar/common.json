@@ -6,10 +6,17 @@
   "Error": {
     "title": "حدث خطأ ما!",
     "description": "حدث خطأ غير متوقع في هذا القسم من التطبيق.",
-    "tryAgain": "حاول مرة أخرى"
+    "tryAgain": "حاول مرة أخرى",
+    "backToHome": "العودة للرئيسية"
+  },
+  "NotFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "backToHome": "العودة للرئيسية"
   },
   "UI": {
     "selectOption": "اختر خياراً",
+    "loading": "جار التحميل...",
     "toggleTheme": "تبديل المظهر",
     "selectLanguage": "اختر اللغة",
     "languages": {
@@ -22,7 +29,8 @@
   "FatalError": {
     "title": "خطأ فادح في التطبيق",
     "description": "واجه التطبيق خطأ غير قابل للاسترداد.",
-    "tryAgain": "حاول الاستعادة"
+    "tryAgain": "حاول الاستعادة",
+    "backToHome": "العودة للرئيسية"
   },
   "Tooltip": {
     "help": "معلومات المساعدة",

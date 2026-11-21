@@ -17,7 +17,9 @@ export function Link({ className, children, ref, ...props }: LinkProps) {
     <NextLink
       ref={ref}
       className={cn(
-        'text-primary hover:text-primary-container cursor-pointer underline-offset-4 transition-colors',
+        'cursor-pointer underline-offset-4 transition-colors',
+        !className?.includes('text-') &&
+          'text-primary hover:text-primary-container dark:hover:text-primary',
         isExternal && 'hover:underline',
         className
       )}

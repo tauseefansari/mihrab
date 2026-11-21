@@ -9,7 +9,7 @@ export function GlassCard({ as: Component = 'div', className, ...props }: GlassC
   return (
     <Component
       className={cn(
-        'glass-panel p-md hover:border-outline/30 rounded-lg transition-colors',
+        'glass-panel p-md hover:border-outline/40 hover:shadow-surface-card rounded-lg transition-all duration-300 ease-out',
         className
       )}
       {...props}

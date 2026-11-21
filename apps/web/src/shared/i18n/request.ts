@@ -7,10 +7,11 @@ export default getRequestConfig(async () => {
   const localeCookie = cookieStore.get('NEXT_LOCALE')?.value;
   const locale = locales.includes(localeCookie as string) ? localeCookie : defaultLocale;
 
-  const [common, nav, dashboard] = await Promise.all([
+  const [common, nav, dashboard, qiblah] = await Promise.all([
     import(`./locales/${locale}/common.json`),
     import(`./locales/${locale}/nav.json`),
     import(`./locales/${locale}/dashboard.json`),
+    import(`./locales/${locale}/qiblah.json`),
   ]);
 
   return {
@@ -19,6 +20,7 @@ export default getRequestConfig(async () => {
       ...common.default,
       Nav: nav.default,
       Dashboard: dashboard.default,
+      Qiblah: qiblah.default,
     },
   };
 });

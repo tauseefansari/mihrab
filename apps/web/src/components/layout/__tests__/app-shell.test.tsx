@@ -14,8 +14,12 @@ vi.mock('@/components/layout/mobile-bottom-nav', () => ({
   MobileBottomNav: () => <nav data-testid="mobile-bottom-nav">BottomNav</nav>,
 }));
 
+vi.mock('@/components/layout/mobile-sidebar-drawer', () => ({
+  MobileSidebarDrawer: () => <aside data-testid="mobile-sidebar-drawer">Drawer</aside>,
+}));
+
 describe('AppShell', () => {
-  it('renders sidebar, top bar, main content, and mobile bottom nav', () => {
+  it('renders sidebar, top bar, main content, mobile drawer, and mobile bottom nav', () => {
     render(
       <AppShell>
         <div>Test Page Content</div>
@@ -24,6 +28,7 @@ describe('AppShell', () => {
 
     expect(screen.getByTestId('desktop-sidebar')).toBeInTheDocument();
     expect(screen.getByTestId('top-bar')).toBeInTheDocument();
+    expect(screen.getByTestId('mobile-sidebar-drawer')).toBeInTheDocument();
     expect(screen.getByTestId('mobile-bottom-nav')).toBeInTheDocument();
     expect(screen.getByText('Test Page Content')).toBeInTheDocument();
   });

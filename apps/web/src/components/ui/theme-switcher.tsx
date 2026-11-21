@@ -45,11 +45,19 @@ export function ThemeSwitcher() {
       variant="ghost"
       size="icon"
       aria-label={t('toggleTheme')}
-      className="bg-surface-container text-on-surface hover:bg-surface-container-high rounded-full transition-colors"
+      className="bg-surface-container text-on-surface hover:text-primary hover:bg-surface-container-high dark:bg-surface-container-low dark:hover:bg-surface-container-highest dark:hover:text-primary focus-visible:ring-primary focus-visible:ring-offset-surface rounded-full transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       onClick={toggleTheme}
     >
-      <Icon name="Moon" size={20} className="block dark:hidden" />
-      <Icon name="Sun" size={20} className="hidden dark:block" />
+      <Icon
+        name="Moon"
+        size={20}
+        className="block transition-transform duration-300 hover:rotate-12 dark:hidden"
+      />
+      <Icon
+        name="Sun"
+        size={20}
+        className="hidden transition-transform duration-300 hover:rotate-45 dark:block"
+      />
     </Button>
   );
 }

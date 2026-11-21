@@ -1,10 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
+import { GlassCard } from '@/components/ui/glass-card';
+import { Icon } from '@/components/ui/icon';
+import { Link } from '@/components/ui/link';
 
 export default function ErrorBoundary({
   error,
@@ -13,24 +17,55 @@ export default function ErrorBoundary({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
-    // Log the error to an error reporting service if configured later
     console.error(error);
   }, [error]);
 
   const t = useTranslations('Error');
 
   return (
-    <Box className="bg-background p-md text-on-background flex min-h-screen flex-col items-center justify-center">
-      <Text as="h2" variant="headline-lg" className="mb-sm text-error">
-        {t('title')}
-      </Text>
-      <Text as="p" variant="body-md" className="mb-md text-on-surface-variant max-w-md text-center">
-        {t('description')}
-      </Text>
-      <Button variant="primary" onClick={() => reset()}>
-        {t('tryAgain')}
-      </Button>
+    <Box
+      as="div"
+      className="bg-background text-on-background flex min-h-96 w-full flex-1 items-center justify-center py-12"
+    >
+      <GlassCard className="gap-md p-lg border-outline-variant/30 flex w-full max-w-2xl flex-col items-center text-center backdrop-blur-xl">
+        <Box
+          as="div"
+          className="bg-error/10 text-error p-md rounded-full transition-transform hover:scale-105"
+        >
+          <Icon name="TriangleAlert" size={48} />
+        </Box>
+
+        <Box as="div" className="space-y-xs">
+          <Text as="h2" variant="headline-lg" className="text-on-background">
+            {t('title')}
+          </Text>
+          <Text as="p" variant="body-md" className="text-on-surface-variant">
+            {t('description')}
+          </Text>
+        </Box>
+
+        <Box as="div" className="gap-sm mt-xs flex flex-wrap items-center justify-center">
+          <Button variant="primary" onClick={() => reset()} className="gap-xs">
+            <Icon name="RotateCcw" size={18} />
+            <Text as="span">{t('tryAgain')}</Text>
+          </Button>
+
+          <Link
+            href="/"
+            onClick={() => {
+              reset();
+              router.push('/');
+            }}
+            className="border-outline-variant/40 bg-surface-container text-on-surface hover:text-on-surface dark:text-on-surface dark:hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest focus-visible:ring-primary focus-visible:ring-offset-surface gap-xs px-md py-sm inline-flex items-center justify-center rounded-xl border text-sm font-semibold transition-all duration-200 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95"
+          >
+            <Icon name="House" size={18} />
+            <Text as="span">{t('backToHome')}</Text>
+          </Link>
+        </Box>
+      </GlassCard>
     </Box>
   );
 }

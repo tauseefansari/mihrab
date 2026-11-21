@@ -1,0 +1,36 @@
+{
+  "title": "क़िबला",
+  "subtitle": "स्वयं को {sanctuary} की ओर संरेखित करें",
+  "angle": "कोण",
+  "distance": "दूरी",
+  "km": "किमी",
+  "instruction": "अपने डिवाइस को समतल रखें और क़िबला के साथ संरेखित करने के लिए घुमाएँ।",
+  "aligned": "क़िबला के साथ संरेखित",
+  "enableCompass": "कम्पास सक्षम करें",
+  "permissionDeniedNotice": "ब्राउज़र द्वारा मोशन सेंसर अनुमति अवरोधित कर दी गई है। लाइव कम्पास के लिए कृपया साइट सेटिंग्स में अनुमति दें।",
+  "calibrate": "कैलिब्रेट करें",
+  "compass": "कम्पास",
+  "calibrateTitle": "कम्पास कैलिब्रेट करें",
+  "calibrateInstruction": "मोशन सेंसर कैलिब्रेट करने के लिए अपने डिवाइस को 8 के आकार (figure-8) में घुमाएँ।",
+  "calibrationDone": "पूर्ण",
+  "calibrationIllustration": "अंक 8 की तरह घुमाने का चित्रांकन",
+  "soundOn": "ध्वनि चालू",
+  "soundOff": "ध्वनि बंद",
+  "selectSanctuary": "स्थान चुनें",
+  "defaultCity": "मुंबई",
+  "compassDialAria": "{sanctuary} की ओर दिशा सूचक कंपास",
+  "sanctuaries": {
+    "makkah": "मक्का",
+    "madinah": "मदीना"
+  },
+  "cardinal": {
+    "N": "उ",
+    "NE": "उ.पू",
+    "E": "पू",
+    "SE": "द.पू",
+    "S": "द",
+    "SW": "द.प",
+    "W": "प",
+    "NW": "उ.प"
+  }
+}

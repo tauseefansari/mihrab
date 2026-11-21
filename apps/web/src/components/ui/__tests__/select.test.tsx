@@ -144,4 +144,88 @@ describe('Select component', () => {
     );
     expect(screen.getByRole('button')).toHaveTextContent('Option 2');
   });
+
+  it('opens dropdown via Enter, Space, or Arrow keys on trigger', async () => {
+    const ARIA_EXPANDED = 'aria-expanded';
+    render(
+      <Select placeholder="Choose one">
+        <option value="opt1">Option 1</option>
+        <option value="opt2">Option 2</option>
+      </Select>
+    );
+    const trigger = screen.getByRole('button');
+    expect(trigger).toHaveAttribute(ARIA_EXPANDED, 'false');
+
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+    expect(trigger).toHaveAttribute(ARIA_EXPANDED, 'true');
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    fireEvent.keyDown(trigger, { key: 'Escape' });
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+    expect(trigger).toHaveAttribute(ARIA_EXPANDED, 'false');
+
+    fireEvent.keyDown(trigger, { key: 'Enter' });
+    expect(trigger).toHaveAttribute(ARIA_EXPANDED, 'true');
+  });
+
+  it('navigates options via keyboard arrows, Home, End, and closes on Escape', async () => {
+    render(
+      <Select placeholder="Select fruit">
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="cherry">Cherry</option>
+      </Select>
+    );
+    const trigger = screen.getByRole('button');
+    fireEvent.click(trigger);
+
+    const listbox = screen.getByRole('listbox');
+    const buttons = screen.getAllByRole('button');
+    expect(buttons).toHaveLength(4);
+    const options = buttons.slice(1);
+
+    // Initial focus on first option
+    expect(document.activeElement).toBe(options[0]);
+
+    // ArrowDown moves to next
+    fireEvent.keyDown(listbox, { key: 'ArrowDown' });
+    expect(document.activeElement).toBe(options[1]);
+
+    // End moves to last
+    fireEvent.keyDown(listbox, { key: 'End' });
+    expect(document.activeElement).toBe(options[2]);
+
+    // Home moves to first
+    fireEvent.keyDown(listbox, { key: 'Home' });
+    expect(document.activeElement).toBe(options[0]);
+
+    // ArrowUp wraps to last
+    fireEvent.keyDown(listbox, { key: 'ArrowUp' });
+    expect(document.activeElement).toBe(options[2]);
+
+    // Escape closes and restores focus to trigger
+    fireEvent.keyDown(listbox, { key: 'Escape' });
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('closes on Tab key press from within the listbox', async () => {
+    render(
+      <Select placeholder="Select fruit">
+        <option value="apple">Apple</option>
+      </Select>
+    );
+    const trigger = screen.getByRole('button');
+    fireEvent.click(trigger);
+    const listbox = screen.getByRole('listbox');
+
+    fireEvent.keyDown(listbox, { key: 'Tab' });
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+  });
 });

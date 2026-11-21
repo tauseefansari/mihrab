@@ -8,8 +8,10 @@
   "zakat": "الزكاة",
   "settings": "الإعدادات",
   "brandName": "المحراب",
-  "notifications": "الإشعارات",
   "profile": "الملف الشخصي",
   "menu": "القائمة",
-  "account": "الحساب"
+  "account": "الحساب",
+  "close": "إغلاق",
+  "navigationMenu": "قائمة التنقل",
+  "drawerNavigation": "قائمة التنقل الجانبية"
 }
