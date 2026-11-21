@@ -63,6 +63,16 @@ export const baseConfig = [
               message:
                 'Usage of relative parent imports is not allowed. Use absolute imports starting with `@/` instead.',
             },
+            {
+              group: [
+                '*public/*.svg',
+                '../*public/*.svg',
+                '@/../public/*.svg',
+                '**/public/**/*.svg',
+              ],
+              message:
+                'SVGs must not be stored in or imported from public/. Store them in src/shared/assets/icons/ instead.',
+            },
           ],
           paths: [
             {

@@ -27,7 +27,7 @@ export default {
     parserOpts: {
       // Strip leading emoji so commitlint can parse the conventional type
       headerPattern:
-        /^(?:\p{Emoji_Presentation}\p{Emoji_Modifier_Base}?(?:\u{200D}\p{Emoji_Presentation})*\s*)?(\w+)(?:\(([^)]*)\))?!?:\s(.+)$/u,
+        /^(?:(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}|\p{Emoji})(?:\u{FE0F}|\p{Emoji_Modifier_Base})?(?:\u{200D}(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}|\p{Emoji}))*\s*)?(\w+)(?:\(([^)]*)\))?!?:\s(.+)$/u,
       headerCorrespondence: ['type', 'scope', 'subject'],
     },
   },
