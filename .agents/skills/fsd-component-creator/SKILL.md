@@ -15,3 +15,4 @@ When creating or modifying components:
 4. **Logical Tailwind Utilities:** Strictly use `ps-`, `pe-`, `ms-`, `me-`, `text-start`, `text-end`. Physical utilities (`pl-`, `mr-`, etc.) are forbidden.
 5. **No Hardcoded Text:** All user-facing strings must use `next-intl` translation keys.
 6. **Strict Typing:** No `any`. Explicitly type all component props.
+7. **No Inline SVGs & Separate SVG Files:** `<svg>` tags in JSX/TSX are strictly forbidden. All SVGs must be separate `.svg` files placed in `src/shared/assets/icons/` (or feature assets, never in `public/`) and imported directly as React components.

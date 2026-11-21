@@ -38,6 +38,7 @@ These rules apply to any autonomous AI agent interacting with this repository.
 
 ## Advanced Restrictions
 
+- **No Inline SVGs & Separate SVG Files (Strictly Enforced):** Inline `<svg>` tags in JSX/TSX are STRICTLY FORBIDDEN. Storing `.svg` files inside `public/` is also STRICTLY FORBIDDEN. All SVGs must be created as dedicated `.svg` files placed in `src/shared/assets/icons/` or `src/shared/assets/` (or feature-scoped asset directories). Import SVGs directly as React components using `@/...` alias imports (e.g. `import KaabaIcon from '@/shared/assets/icons/kaaba.svg';`) and pass dimensions, styling classes, and accessibility attributes via component props (`width`, `height`, `className`, `aria-hidden`, etc.).
 - **No ESLint Disable:** The use of `eslint-disable` or `eslint-enable` comments is STRICTLY FORBIDDEN. The linter runs with `--no-inline-config`.
 - **Package Manager:** ONLY use `pnpm`. Do not use `npm` or `yarn`.
 - **Alias Imports Everywhere:** STRICTLY USE `@/...` alias imports everywhere, including inside test files. Relative parent imports (`../`) are forbidden.

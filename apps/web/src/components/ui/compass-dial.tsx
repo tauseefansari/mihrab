@@ -1,5 +1,7 @@
 import { cn } from '@/shared/utils/cn';
 import { SanctuaryIcon } from '@/components/ui/sanctuary-icon';
+import NeedleNorthSvg from '@/shared/assets/icons/needle-north.svg';
+import NeedleSouthSvg from '@/shared/assets/icons/needle-south.svg';
 
 export interface CompassLabels {
   north: string;
@@ -82,23 +84,7 @@ function CompassNeedle({
           isAligned ? 'scale-105 drop-shadow-xl' : 'drop-shadow-md'
         )}
       >
-        <svg
-          width="26"
-          height="66"
-          viewBox="0 0 26 66"
-          className="overflow-visible"
-          aria-hidden="true"
-        >
-          {/* Left Facet: Vibrant primary mint in dark mode, deep emerald in light mode */}
-          <polygon points="13,0 0,66 13,58" className="fill-primary" />
-          {/* Right Facet: Slightly shaded for realistic 3D depth */}
-          <polygon
-            points="13,0 13,58 26,66"
-            className="fill-primary/80 dark:fill-primary-container"
-          />
-          {/* Subtle center crease highlight */}
-          <line x1="13" y1="0" x2="13" y2="58" className="stroke-white/50" strokeWidth="1" />
-        </svg>
+        <NeedleNorthSvg width="26" height="66" className="overflow-visible" aria-hidden="true" />
 
         {/* Sanctuary Badge (Kaaba for Makkah, Green Dome for Madinah) */}
         <div
@@ -115,23 +101,7 @@ function CompassNeedle({
 
       {/* South / Opposite Arrow (Luminous Platinum Silver with Crisp Visibility in Dark Mode) */}
       <div className="flex flex-1 flex-col items-center justify-end drop-shadow-md">
-        <svg
-          width="26"
-          height="66"
-          viewBox="0 0 26 66"
-          className="overflow-visible"
-          aria-hidden="true"
-        >
-          {/* Left Facet: Bright surface facet */}
-          <polygon
-            points="13,66 0,0 13,8"
-            className="fill-surface-container-highest dark:fill-surface-bright"
-          />
-          {/* Right Facet: Outline facet for 3D depth */}
-          <polygon points="13,66 13,8 26,0" className="fill-outline-variant dark:fill-outline" />
-          {/* Center crease line */}
-          <line x1="13" y1="8" x2="13" y2="66" className="stroke-outline/40" strokeWidth="1" />
-        </svg>
+        <NeedleSouthSvg width="26" height="66" className="overflow-visible" aria-hidden="true" />
       </div>
     </div>
   );

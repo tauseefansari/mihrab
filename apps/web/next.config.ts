@@ -9,6 +9,9 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
+  experimental: {
+    agentUpgrade: 'security',
+  },
   reactStrictMode: true,
   reactCompiler: true,
   compiler: {
@@ -23,6 +26,38 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  webpack(config) {
+    const fileLoaderRule = config.module.rules.find((rule: { test?: RegExp }) =>
+      rule.test?.test?.('.svg')
+    );
+
+    config.module.rules.push(
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule?.issuer,
+        resourceQuery: { not: [...(fileLoaderRule?.resourceQuery?.not || []), /url/] },
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgo: false,
+            },
+          },
+        ],
+      }
+    );
+
+    if (fileLoaderRule) {
+      fileLoaderRule.exclude = /\.svg$/i;
+    }
+
+    return config;
   },
   async headers() {
     return [

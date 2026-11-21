@@ -1,0 +1,8 @@
+<svg width="26" height="66" viewBox="0 0 26 66" fill="none" xmlns="http://www.w3.org/2000/svg" class="overflow-visible">
+  <polygon points="13,0 0,66 13,58" class="fill-primary" />
+  <polygon
+    points="13,0 13,58 26,66"
+    class="fill-primary/80 dark:fill-primary-container"
+  />
+  <line x1="13" y1="0" x2="13" y2="58" class="stroke-white/50" stroke-width="1" />
+</svg>

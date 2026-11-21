@@ -90,6 +90,11 @@ export const nextConfig = [
           message:
             'Hardcoded color values (hex, rgb, hsl) in inline styles are forbidden. Use design system tokens instead.',
         },
+        {
+          selector: 'JSXElement[openingElement.name.name="svg"]',
+          message:
+            'Inline SVG elements are forbidden. Place SVGs in separate .svg files outside public/ (e.g. in src/shared/assets/icons/) and import them as components.',
+        },
       ],
     },
   },
