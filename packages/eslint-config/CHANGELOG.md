@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/tauseefansari/mihrab/compare/eslint-config-v0.1.1...eslint-config-v0.1.2) (2026-11-22)
+
+
+### 🔧 Miscellaneous Chores
+
+* **deps:** bump the dependencies group with 7 updates ([#20](https://github.com/tauseefansari/mihrab/issues/20)) ([62428a8](https://github.com/tauseefansari/mihrab/commit/62428a8e2bab0ede3e76da9384d90fe1c9235fdb))
+
 ## [0.1.1](https://github.com/tauseefansari/mihrab/compare/eslint-config-v0.1.0...eslint-config-v0.1.1) (2026-10-20)
 
 
