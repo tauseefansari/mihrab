@@ -16,7 +16,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-sonarjs": "^4.2.2",
     "eslint-plugin-tailwindcss": "^4.4.0",
-    "eslint-plugin-unicorn": "^79.0.0"
+    "eslint-plugin-unicorn": "^80.0.0"
   },
   "peerDependencies": {
     "eslint": "^9.0.0 || ^10.0.0"
